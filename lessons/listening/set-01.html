@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>N5聽力｜練習組1 課題理解</title>
+<link rel="stylesheet" href="../../assets/site.css">
+<style>
+  .quiz-card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:26px 24px;margin-bottom:20px;}
+  .dialogue{background:var(--indigo-soft);border-radius:12px;padding:14px 16px;margin-bottom:16px;font-size:14px;}
+  .dialogue .line{margin:3px 0;}
+  .dialogue .speaker{font-weight:700;color:var(--indigo);}
+  .q-text{font-size:16.5px;font-weight:700;margin:0 0 16px;}
+  .options{display:grid;gap:8px;}
+  .opt{text-align:left;font:inherit;font-size:15px;padding:11px 14px;border-radius:10px;border:2px solid var(--line);background:var(--paper);cursor:pointer;}
+  .opt:hover:not(:disabled){border-color:var(--indigo);}
+  .opt.correct{border-color:var(--matcha);background:var(--matcha-soft);font-weight:700;}
+  .opt.wrong{border-color:var(--wrong);background:var(--wrong-soft);}
+  .opt:disabled{cursor:default;}
+  .explain{margin-top:14px;padding:12px 16px;border-radius:10px;background:var(--sakura-soft);font-size:14px;display:none;}
+  .explain.show{display:block;}
+  .result-banner{text-align:center;padding:20px;background:var(--sakura-soft);border-radius:16px;margin-bottom:20px;display:none;}
+  .result-banner.show{display:block;}
+  .result-banner .score{font-size:32px;font-weight:800;color:var(--sakura);}
+  .hint{font-size:13px;color:var(--ink-soft);margin-bottom:24px;}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <a class="back" href="index.html">← 回聽力題型列表</a>
+  <h1>練習組1｜<span class="accent">課題理解</span></h1>
+  <p>聽兩人對話，抓出接下來該做什麼。可以重複播放。</p>
+</header>
+
+<main>
+  <p class="hint">建議先只播放1次作答，答完再重播確認，這樣比較接近真實考試的訓練效果。</p>
+  <div class="result-banner" id="result-banner"><span class="score" id="result-score"></span><div>分（滿分6分）</div></div>
+  <div id="quiz-area"></div>
+</main>
+
+<footer>阿凱日文教室・N5 聽力練習</footer>
+
+<script src="../../assets/speak.js"></script>
+<script>
+const items = [
+  {
+    dialogue: [
+      {s:"女", t:"すみません、この本を借りたいです。"},
+      {s:"男", t:"じゃあ、この紙に名前と電話番号を書いてください。"},
+      {s:"女", t:"わかりました。"},
+    ],
+    q:"女の人はこれから何をしますか。",
+    opts:["紙に名前と電話番号を書きます","本を買います","電話をかけます","図書館に行きます"],
+    a:0,
+    exp:"男の人が「紙に名前と電話番号を書いてください」と言っているので、女の人はまずそれをします。"
+  },
+  {
+    dialogue: [
+      {s:"男", t:"田中さん、明日の会議は何時からですか。"},
+      {s:"女", t:"3時からです。でも、写真を撮るので、2時50分に会議室に来てください。"},
+      {s:"男", t:"わかりました。"},
+    ],
+    q:"男の人は明日、何時に会議室に行きますか。",
+    opts:["2時","2時50分","3時","3時50分"],
+    a:1,
+    exp:"女の人が「2時50分に会議室に来てください」と言っています。会議は3時からですが、来るのは2時50分です。"
+  },
+  {
+    dialogue: [
+      {s:"女", t:"卵と牛乳を買いましたか。"},
+      {s:"男", t:"卵は買いましたが、牛乳は買っていません。"},
+      {s:"女", t:"じゃあ、帰りに買ってください。"},
+      {s:"男", t:"わかりました。"},
+    ],
+    q:"男の人はこれから何を買いますか。",
+    opts:["卵","牛乳","卵と牛乳","パン"],
+    a:1,
+    exp:"「卵は買いましたが、牛乳は買っていません」＝まだ買っていないのは牛乳。それを帰りに買ってと頼まれています。"
+  },
+  {
+    dialogue: [
+      {s:"男", t:"山田さん、今日は天気が悪いですね。"},
+      {s:"女", t:"そうですね。傘を持っていますか。"},
+      {s:"男", t:"いいえ、持っていません。"},
+      {s:"女", t:"私のを貸します。"},
+    ],
+    q:"男の人はこれから何をしますか。",
+    opts:["傘を買います","女の人の傘を借ります","家に帰ります","傘を貸します"],
+    a:1,
+    exp:"女の人が「私のを貸します」と言っているので、男の人は女の人の傘を借ります。"
+  },
+  {
+    dialogue: [
+      {s:"女", t:"すみません、駅までどうやって行きますか。"},
+      {s:"男", t:"この道をまっすぐ行って、次の角を右に曲がってください。"},
+      {s:"女", t:"わかりました。ありがとうございます。"},
+    ],
+    q:"女の人はこれから何をしますか。",
+    opts:["この道をまっすぐ行って、右に曲がります","バスに乗ります","駅で休みます","地図を見ます"],
+    a:0,
+    exp:"男の人が教えてくれた通りに、女の人はまっすぐ行ってから次の角を右に曲がります。"
+  },
+  {
+    dialogue: [
+      {s:"男", t:"何を食べますか。"},
+      {s:"女", t:"魚料理をお願いします。飲み物はお茶をください。"},
+      {s:"男", t:"はい、わかりました。"},
+    ],
+    q:"女の人は何を頼みましたか。",
+    opts:["魚料理とお茶","肉料理とお茶","魚料理と水","肉料理と水"],
+    a:0,
+    exp:"「魚料理をお願いします」「お茶をください」と言っているので、頼んだのは魚料理とお茶です。"
+  },
+];
+
+let score = 0, answered = 0;
+const quizArea = document.getElementById("quiz-area");
+
+items.forEach((item, qi) => {
+  const card = document.createElement("div");
+  card.className = "quiz-card";
+  const dialogueHtml = item.dialogue.map(d => `<div class="line"><span class="speaker">${d.s}：</span>${d.t}</div>`).join("");
+  const optsHtml = item.opts.map((o,i)=>`<button class="opt" data-i="${i}">${o}</button>`).join("");
+  card.innerHTML = `
+    <button class="play-btn">🔊 播放對話 ${qi+1}</button>
+    <div class="dialogue">${dialogueHtml}</div>
+    <p class="q-text">${item.q}</p>
+    <div class="options">${optsHtml}</div>
+    <div class="explain"></div>
+  `;
+  card.querySelector(".play-btn").addEventListener("click", () => {
+    const fullText = item.dialogue.map(d => d.t).join("。");
+    speakJa(fullText);
+  });
+  card.querySelectorAll(".opt").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const i = Number(btn.dataset.i);
+      card.querySelectorAll(".opt").forEach(b=>b.disabled=true);
+      if(i===item.a){btn.classList.add("correct");score++;}
+      else{btn.classList.add("wrong");card.querySelector(`.opt[data-i="${item.a}"]`).classList.add("correct");}
+      const exp = card.querySelector(".explain");
+      exp.innerHTML = `<b>${i===item.a?"答對了！":"答錯囉，正解如上。"}</b><br>${item.exp}`;
+      exp.classList.add("show");
+      answered++;
+      if(answered === items.length){
+        document.getElementById("result-score").textContent = score;
+        document.getElementById("result-banner").classList.add("show");
+      }
+    });
+  });
+  quizArea.appendChild(card);
+});
+</script>
+</body>
+</html>
