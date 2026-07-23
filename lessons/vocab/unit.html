@@ -7,13 +7,21 @@
 <link rel="stylesheet" href="../../assets/site.css">
 <style>
   .word-list{display:flex;flex-direction:column;gap:12px;}
-  .word-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 20px;}
+  .word-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 20px;position:relative;}
+  .word-number{
+    display:inline-block;font-size:12px;font-weight:700;color:var(--indigo);
+    background:var(--indigo-soft);padding:2px 9px;border-radius:999px;margin-bottom:8px;
+  }
   .word-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
   .word-head .kanji{font-size:21px;font-weight:700;}
   .word-head .meaning{font-size:14px;color:var(--ink-soft);margin-left:auto;}
   .sentence-row{margin-top:10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
   .sentence-row .jp{font-size:15.5px;}
   .loading{color:var(--ink-soft);font-size:14px;text-align:center;padding:40px 0;}
+  .half-divider{
+    display:flex;align-items:center;gap:12px;margin:26px 0;color:var(--ink-soft);font-size:13px;font-weight:700;
+  }
+  .half-divider::before, .half-divider::after{content:"";flex:1;height:1px;background:var(--line);}
   .unit-nav{display:flex;justify-content:space-between;margin-top:30px;font-size:14px;}
   .unit-nav a{text-decoration:none;}
 </style>
