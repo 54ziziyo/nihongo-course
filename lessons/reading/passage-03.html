@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>N5閱讀 第3篇｜わたしの部屋</title>
+<link rel="stylesheet" href="../../assets/site.css">
+<style>
+  .passage-card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:26px 24px;margin-bottom:30px;}
+  .sent-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;}
+  .sent-row .jp{font-size:17px;line-height:1.9;}
+  .sent-row .play-btn{flex-shrink:0;margin-top:2px;}
+  .quiz-card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:26px 24px;margin-bottom:20px;}
+  .q-text{font-size:16.5px;font-weight:700;margin:0 0 16px;}
+  .options{display:grid;gap:8px;}
+  .opt{text-align:left;font:inherit;font-size:15px;padding:11px 14px;border-radius:10px;border:2px solid var(--line);background:var(--paper);cursor:pointer;}
+  .opt:hover:not(:disabled){border-color:var(--indigo);}
+  .opt.correct{border-color:var(--matcha);background:var(--matcha-soft);font-weight:700;}
+  .opt.wrong{border-color:var(--wrong);background:var(--wrong-soft);}
+  .opt:disabled{cursor:default;}
+  .explain{margin-top:14px;padding:12px 16px;border-radius:10px;background:var(--indigo-soft);font-size:14px;display:none;}
+  .explain.show{display:block;}
+  .result-banner{text-align:center;padding:20px;background:var(--sakura-soft);border-radius:16px;margin-bottom:30px;display:none;}
+  .result-banner.show{display:block;}
+  .result-banner .score{font-size:32px;font-weight:800;color:var(--sakura);}
+  .grammar-note{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 18px;margin-bottom:10px;}
+  .grammar-note .term{font-weight:700;font-size:15px;margin-bottom:4px;color:var(--indigo);}
+  .grammar-note .desc{font-size:13.5px;color:var(--ink-soft);}
+  .kana-note{background:var(--matcha-soft);border-radius:14px;padding:14px 18px;font-size:13.5px;margin-bottom:20px;}
+  section.block{margin:36px 0;}
+  section.block h2{font-size:19px;display:flex;align-items:center;gap:8px;}
+  section.block h2 .dot{width:9px;height:9px;border-radius:50%;background:var(--sakura);display:inline-block;}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <a class="back" href="index.html">← 回閱讀文章列表</a>
+  <h1>第3篇｜<span class="accent">わたしの部屋</span></h1>
+  <p>N5程度短文，練習に／があります的存在句型，跟位置詞の上/中/前/近く</p>
+</header>
+
+<main>
+
+  <section class="block">
+    <h2><span class="dot"></span>本文</h2>
+    <div class="passage-card" id="passage"></div>
+  </section>
+
+  <section class="block">
+    <h2><span class="dot"></span>理解問題</h2>
+    <div class="result-banner" id="result-banner"><span class="score" id="result-score"></span><div>分（滿分6分）</div></div>
+    <div id="quiz-area"></div>
+  </section>
+
+  <section class="block">
+    <h2><span class="dot"></span>文法解說</h2>
+    <div class="grammar-note"><div class="term">場所に　物が　あります</div><div class="desc">〜地方有〜（東西）。這是「無生命物品」的存在句，人或動物要用「います」不是「あります」。</div></div>
+    <div class="grammar-note"><div class="term">〜の上／中／前／近く</div><div class="desc">位置詞，前面用「の」連接名詞。「机の上」＝桌上、「部屋の中」＝房間裡、「窓の前」＝窗戶前面、「ベッドの近く」＝床附近。</div></div>
+    <div class="grammar-note"><div class="term">〜が好きです</div><div class="desc">喜歡〜，「好き」是な形容詞，喜歡的對象用「が」，不是「を」。</div></div>
+  </section>
+
+  <section class="block">
+    <h2><span class="dot"></span>假名解說</h2>
+    <div class="kana-note">
+      這篇沒有片假名，因為描述的是傳統家具擺設（机、椅子、窓、棚），這些都是和語或漢語詞彙。如果房間裡有像「ベッド」「テーブル」這種外來家具，才會出現片假名——你可以對照第1單元的單字庫，裡面ベッド就是片假名寫的。
+    </div>
+  </section>
+
+</main>
+
+<footer>阿凱日文教室・N5 閱讀練習</footer>
+
+<script src="../../assets/speak.js"></script>
+<script>
+const sentences = [
+  "私{わたし}の部屋{へや}は小{ちい}さいですが、きれいです。",
+  "部屋{へや}の中{なか}に机{つくえ}と椅子{いす}があります。",
+  "机{つくえ}の上{うえ}に本{ほん}と辞書{じしょ}があります。",
+  "ベッドの近{ちか}くに窓{まど}があります。",
+  "窓{まど}の前{まえ}に小{ちい}さい木{き}があります。",
+  "棚{たな}の上{うえ}に写真{しゃしん}があります。",
+  "私{わたし}はこの部屋{へや}が好{す}きです。",
+];
+
+const passageEl = document.getElementById("passage");
+sentences.forEach(s => {
+  const row = document.createElement("div");
+  row.className = "sent-row";
+  row.innerHTML = `<button class="play-btn small">🔊</button><p class="jp">${renderFurigana(s)}</p>`;
+  row.querySelector("button").addEventListener("click", () => speakJa(stripFuriganaForSpeech(s)));
+  passageEl.appendChild(row);
+});
+
+const questionBank = [
+  {q:"机の上に何がありますか。",opts:["本と辞書","写真","服","傘"],a:0,exp:"「机の上に本と辞書があります」＝桌上有書和字典。"},
+  {q:"ベッドの近くに何がありますか。",opts:["ドア","窓","鏡","カーテン"],a:1,exp:"「ベッドの近くに窓があります」＝床附近有窗戶。"},
+  {q:"窓の前に何がありますか。",opts:["花","小さい木","犬","猫"],a:1,exp:"「窓の前に小さい木があります」＝窗戶前面有一棵小樹。"},
+  {q:"棚の上に何がありますか。",opts:["本","写真","時計","鍵"],a:1,exp:"「棚の上に写真があります」＝架子上有照片。"},
+  {q:"わたしの部屋はどんな部屋ですか。",opts:["大きくてきれいな部屋","小さいがきれいな部屋","大きくて汚い部屋","小さくて汚い部屋"],a:1,exp:"「部屋は小さいですが、きれいです」＝房間雖小但很乾淨。"},
+  {q:"わたしはこの部屋が好きですか。",opts:["はい、好きです","いいえ、好きではありません","分かりません","好きでも嫌いでもありません"],a:0,exp:"「私はこの部屋が好きです」＝我喜歡這個房間。"},
+];
+
+let score = 0, answered = 0;
+const quizArea = document.getElementById("quiz-area");
+questionBank.forEach((q, qi) => {
+  const card = document.createElement("div");
+  card.className = "quiz-card";
+  const optsHtml = q.opts.map((o,i)=>`<button class="opt" data-i="${i}">${o}</button>`).join("");
+  card.innerHTML = `<p class="q-text">${qi+1}. ${q.q}</p><div class="options">${optsHtml}</div><div class="explain"></div>`;
+  card.querySelectorAll(".opt").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const i = Number(btn.dataset.i);
+      card.querySelectorAll(".opt").forEach(b=>b.disabled=true);
+      if(i===q.a){btn.classList.add("correct");score++;}
+      else{btn.classList.add("wrong");card.querySelector(`.opt[data-i="${q.a}"]`).classList.add("correct");}
+      const exp = card.querySelector(".explain");
+      exp.innerHTML = `<b>${i===q.a?"答對了！":"答錯囉，正解如上。"}</b><br>${q.exp}`;
+      exp.classList.add("show");
+      answered++;
+      if(answered === questionBank.length){
+        document.getElementById("result-score").textContent = score;
+        document.getElementById("result-banner").classList.add("show");
+      }
+    });
+  });
+  quizArea.appendChild(card);
+});
+</script>
+</body>
+</html>
