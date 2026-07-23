@@ -1,0 +1,251 @@
+<title>0-4課｜否定形全解析</title>
+<style>
+  :root {
+    --paper: #ffffff;
+    --ink: #2b2620;
+    --muted: #746f63;
+    --line: #e8e5dc;
+    --red: #c1443c;
+    --teal: #3f8f82;
+    --gold: #e0a52c;
+    --indigo: #4a5b8c;
+    --purple: #8c5ba0;
+    --card: #ffffff;
+    --card-alt: #f7f5f0;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Hiragino Maru Gothic ProN", "Hiragino Sans", "Noto Sans TC", "Noto Sans JP", -apple-system, sans-serif;
+    line-height: 1.8;
+    padding: 0 1.1rem 5rem;
+  }
+  main { max-width: 700px; margin: 0 auto; }
+  ruby rt { font-size: .55em; color: var(--muted); }
+
+  .hero { display: flex; align-items: center; gap: 1.2rem; padding: 2.4rem 0 1.6rem; flex-wrap: wrap; }
+  .hero svg { width: 92px; height: 92px; flex-shrink: 0; }
+  .hero-text .eyebrow { font-size: .78rem; letter-spacing: .16em; color: var(--red); font-weight: 800; text-transform: uppercase; }
+  .hero-text h1 { font-size: 1.5rem; font-weight: 900; margin: .3rem 0 .4rem; line-height: 1.35; text-wrap: balance; }
+  .hero-text p { font-size: .92rem; color: var(--muted); max-width: 34em; }
+
+  .bubble { position: relative; background: var(--card); border: 2px solid var(--line); border-radius: 16px; padding: 1rem 1.3rem; font-size: .92rem; margin: 1.4rem 0; }
+  .bubble.mascot::before { content: ""; position: absolute; left: 28px; top: -10px; border-width: 0 10px 10px 10px; border-style: solid; border-color: transparent transparent var(--card) transparent; }
+
+  h2.section { font-size: 1.2rem; font-weight: 900; margin: 2.6rem 0 .9rem; display: flex; align-items: center; gap: .55rem; }
+  h2.section .num { background: var(--red); color: #fff; font-size: .8rem; font-weight: 800; width: 1.8rem; height: 1.8rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  h3.sub { font-size: 1rem; font-weight: 800; margin: 1.6rem 0 .6rem; color: var(--indigo); }
+  p.lead { font-size: .95rem; color: var(--muted); margin-bottom: 1rem; }
+
+  /* 四宮格總覽 */
+  .four-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; margin-bottom: 1.4rem; }
+  @media (max-width: 480px) { .four-grid { grid-template-columns: 1fr; } }
+  .four-card { border-radius: 14px; padding: 1.1rem 1.2rem; color: #fff; }
+  .four-card .zh-q { font-size: .82rem; opacity: .85; margin-bottom: .3rem; }
+  .four-card .jp-form { font-size: 1.15rem; font-weight: 900; margin-bottom: .3rem; }
+  .four-card .desc { font-size: .82rem; opacity: .92; }
+  .card-1 { background: var(--indigo); }
+  .card-2 { background: var(--red); }
+  .card-3 { background: var(--teal); }
+  .card-4 { background: var(--purple); }
+
+  .tbl-wrap { overflow-x: auto; border-radius: 12px; border: 1px solid var(--line); margin-bottom: 1rem; }
+  table.conj { width: 100%; border-collapse: collapse; font-size: .88rem; min-width: 520px; }
+  table.conj th { background: var(--indigo); color: #fff; padding: .6rem .7rem; text-align: left; font-size: .74rem; letter-spacing: .04em; text-transform: uppercase; white-space: nowrap; }
+  table.conj td { padding: .6rem .7rem; border-top: 1px solid var(--line); white-space: nowrap; }
+  table.conj .jp { font-weight: 700; }
+  table.conj .arrow { color: var(--muted); }
+  table.conj .neg { color: var(--red); font-weight: 800; }
+
+  .usage-grid { display: grid; gap: .9rem; margin-bottom: 1.4rem; }
+  .usage-card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 1rem 1.2rem; }
+  .usage-card .pattern { font-weight: 800; font-size: .98rem; margin-bottom: .3rem; }
+  .usage-card .meaning { font-size: .82rem; color: var(--muted); margin-bottom: .5rem; }
+  .usage-card .example { font-size: .9rem; background: var(--card-alt); border-radius: 8px; padding: .6rem .8rem; }
+  .usage-card .example .zh { font-size: .8rem; color: var(--muted); margin-top: .25rem; }
+
+  .warn-box { display: flex; gap: .8rem; align-items: flex-start; background: #ffeceb; border: 2px solid var(--red); border-radius: 14px; padding: 1rem 1.2rem; margin: 1.6rem 0; }
+  .warn-box svg { width: 34px; height: 34px; flex-shrink: 0; }
+  .warn-box b { color: var(--red); }
+  .warn-box p { font-size: .88rem; margin: .3rem 0 0; }
+
+  .compare-strip { display: flex; align-items: center; gap: .6rem; flex-wrap: wrap; background: var(--card-alt); border-radius: 10px; padding: .8rem 1rem; margin-bottom: .8rem; font-size: .88rem; }
+  .compare-strip .zh-tag { font-weight: 800; background: #fff; border: 1px solid var(--line); border-radius: 6px; padding: .2rem .55rem; }
+  .compare-strip .jp-tag { font-weight: 800; color: var(--red); }
+
+  .quiz-card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 1rem 1.2rem; margin-bottom: .8rem; }
+  .quiz-card .q { font-weight: 700; font-size: .94rem; margin-bottom: .5rem; }
+  .quiz-card details summary { cursor: pointer; font-size: .84rem; font-weight: 800; color: var(--indigo); list-style: none; }
+  .quiz-card details summary::-webkit-details-marker { display: none; }
+  .quiz-card details summary::before { content: "👉 "; }
+  .quiz-card details[open] summary::before { content: "✅ "; }
+  .quiz-card .ans { margin-top: .5rem; font-size: .9rem; background: var(--card-alt); border-radius: 8px; padding: .6rem .8rem; }
+
+  .recap { background: var(--indigo); color: #fff; border-radius: 16px; padding: 1.4rem 1.5rem; margin-top: 2.4rem; }
+  .recap h2 { font-size: 1.05rem; font-weight: 900; margin-bottom: .7rem; }
+  .recap ul { margin: 0; padding-left: 1.2rem; font-size: .88rem; }
+  .recap li { margin-bottom: .4rem; }
+
+  footer { font-size: .8rem; color: var(--muted); margin-top: 2.5rem; text-align: center; }
+</style>
+
+<main>
+  <div class="hero">
+    <svg viewBox="0 0 100 100"><circle cx="50" cy="55" r="38" fill="#f4d9a8"/><ellipse cx="32" cy="30" rx="10" ry="13" fill="#f4d9a8"/><ellipse cx="68" cy="30" rx="10" ry="13" fill="#f4d9a8"/><ellipse cx="32" cy="32" rx="5" ry="7" fill="#e8b877"/><ellipse cx="68" cy="32" rx="5" ry="7" fill="#e8b877"/><circle cx="36" cy="52" r="4" fill="#2b2620"/><circle cx="64" cy="52" r="4" fill="#2b2620"/><circle cx="26" cy="62" r="6" fill="#f4a89c" opacity=".7"/><circle cx="74" cy="62" r="6" fill="#f4a89c" opacity=".7"/><path d="M40 66 Q50 74 60 66" stroke="#2b2620" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>
+    <div class="hero-text">
+      <div class="eyebrow">0-4課</div>
+      <h1>否定形全解析</h1>
+      <p>「不喝」「不要喝」「不想喝」「不能喝」——中文看起來都是「不＋喝」，但在日文裡是<b>四種完全不同的文法</b>。今天把它們一次拆開講清楚。</p>
+    </div>
+  </div>
+
+  <div class="bubble mascot">
+    <b>老師先說重點：</b>中文用「不」這一個字，硬扛了四種不同的意思。日文比較誠實——它用四套完全不同的文法形狀，把這四種意思分開講。所以不是你腦子亂，是中文本身把資訊藏起來了。
+  </div>
+
+  <h2 class="section"><span class="num">1</span>先看全貌：四種「不」分別是什麼</h2>
+  <p class="lead">以「<ruby>飲<rt>の</rt></ruby>む（喝）」為例，一次看懂四種否定的差異。</p>
+  <div class="four-grid">
+    <div class="four-card card-1">
+      <div class="zh-q">「不喝」</div>
+      <div class="jp-form"><ruby>飲<rt>の</rt></ruby>まない</div>
+      <div class="desc">單純否定：客觀描述「不做這件事」，沒有情緒</div>
+    </div>
+    <div class="four-card card-2">
+      <div class="zh-q">「不要喝／不准喝」</div>
+      <div class="jp-form"><ruby>飲<rt>の</rt></ruby>まないでください</div>
+      <div class="desc">禁止：叫別人不要做，帶有要求／命令的語氣</div>
+    </div>
+    <div class="four-card card-3">
+      <div class="zh-q">「不想喝」</div>
+      <div class="jp-form"><ruby>飲<rt>の</rt></ruby>みたくない</div>
+      <div class="desc">意志否定：講的是「我心裡不想」，主觀意願</div>
+    </div>
+    <div class="four-card card-4">
+      <div class="zh-q">「不能喝」</div>
+      <div class="jp-form"><ruby>飲<rt>の</rt></ruby>めない</div>
+      <div class="desc">可能形否定：講的是「能力上／規則上做不到」</div>
+    </div>
+  </div>
+
+  <div class="warn-box">
+    <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="42" fill="#f4d9a8"/><circle cx="38" cy="46" r="4" fill="#2b2620"/><circle cx="62" cy="46" r="4" fill="#2b2620"/><path d="M36 66 Q50 58 64 66" stroke="#2b2620" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>
+    <div>
+      <b>判斷口訣</b>
+      <p>看到中文「不＋動詞」時，先問自己三個問題：①這是在講「客觀事實」還是「我的心情」？②有沒有「叫別人」的意思？③有沒有「能力／規則做不到」的意思？答案會直接把你導向對的那一格。</p>
+    </div>
+  </div>
+
+  <h2 class="section"><span class="num">2</span>第一種：ない形（單純否定）—— 常體現在否定</h2>
+  <p class="lead">這是最基本的否定，就是我們在 0-3課「地圖」裡教過的「常體現在否定」那一格。做法：把動詞ます形的「ます」拿掉，換成 ない 系統的變化。</p>
+  <div class="tbl-wrap">
+    <table class="conj">
+      <tr><th>組別</th><th>辭書形</th><th></th><th class="neg">ない形</th><th>中文</th></tr>
+      <tr><td>五段（う段→あ段＋ない）</td><td class="jp"><ruby>飲<rt>の</rt></ruby>む</td><td class="arrow">→</td><td class="neg"><ruby>飲<rt>の</rt></ruby>まない</td><td>不喝</td></tr>
+      <tr><td>五段</td><td class="jp"><ruby>買<rt>か</rt></ruby>う</td><td class="arrow">→</td><td class="neg"><ruby>買<rt>か</rt></ruby>わない</td><td>不買</td></tr>
+      <tr><td>五段</td><td class="jp"><ruby>書<rt>か</rt></ruby>く</td><td class="arrow">→</td><td class="neg"><ruby>書<rt>か</rt></ruby>かない</td><td>不寫</td></tr>
+      <tr><td>一段（る拿掉＋ない）</td><td class="jp"><ruby>食<rt>た</rt></ruby>べる</td><td class="arrow">→</td><td class="neg"><ruby>食<rt>た</rt></ruby>べない</td><td>不吃</td></tr>
+      <tr><td>不規則</td><td class="jp">する</td><td class="arrow">→</td><td class="neg">しない</td><td>不做</td></tr>
+      <tr><td>不規則</td><td class="jp"><ruby>来<rt>く</rt></ruby>る</td><td class="arrow">→</td><td class="neg"><ruby>来<rt>こ</rt></ruby>ない</td><td>不來</td></tr>
+    </table>
+  </div>
+  <div class="warn-box">
+    <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="42" fill="#f4d9a8"/><circle cx="38" cy="46" r="4" fill="#2b2620"/><circle cx="62" cy="46" r="4" fill="#2b2620"/><path d="M36 66 Q50 58 64 66" stroke="#2b2620" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>
+    <div><b>五段動詞的規則</b><p>う段音（う・く・ぐ・す・つ・ぬ・ぶ・む）改成同一行的あ段音，再加ない。例外：語尾是「う」的動詞（如買う），不是變成「あ」而是變成「わ」——買わない，不是買あない。</p></div>
+  </div>
+  <div class="usage-card">
+    <div class="pattern">實際句子</div>
+    <div class="example"><ruby>今日<rt>きょう</rt></ruby>はお<ruby>酒<rt>さけ</rt></ruby>を<ruby>飲<rt>の</rt></ruby>まない。<div class="zh">今天不喝酒。（單純陳述事實，常體）</div></div>
+  </div>
+
+  <h2 class="section"><span class="num">3</span>第二種：〜ないでください（禁止）</h2>
+  <p class="lead">在ない形後面加上「でください」，變成「請不要⋯」——這是有對象的，是在跟某人講話。</p>
+  <div class="usage-grid">
+    <div class="usage-card">
+      <div class="pattern"><ruby>飲<rt>の</rt></ruby>まないでください</div>
+      <div class="meaning">請不要喝（禮貌但明確的禁止）</div>
+      <div class="example"><ruby>運転中<rt>うんてんちゅう</rt></ruby>にお<ruby>酒<rt>さけ</rt></ruby>を<ruby>飲<rt>の</rt></ruby>まないでください。<div class="zh">開車時請不要喝酒。</div></div>
+    </div>
+    <div class="usage-card">
+      <div class="pattern">更輕的講法：〜ないほうがいいです</div>
+      <div class="meaning">不是禁止，是「建議你最好不要」，語氣柔和很多</div>
+      <div class="example"><ruby>夜<rt>よる</rt></ruby>、コーヒーを<ruby>飲<rt>の</rt></ruby>まないほうがいいです。<div class="zh">晚上最好不要喝咖啡。</div></div>
+    </div>
+  </div>
+
+  <h2 class="section"><span class="num">4</span>第三種：〜たくない（意志否定）</h2>
+  <p class="lead">這是講「我心裡不想」，不是客觀事實，是主觀意願。做法：動詞ます形的「ます」拿掉，換成「たくない」。</p>
+  <div class="tbl-wrap">
+    <table class="conj">
+      <tr><th>ます形（拿掉ます）</th><th></th><th class="neg">〜たくない</th><th>中文</th></tr>
+      <tr><td class="jp"><ruby>飲<rt>の</rt></ruby>み</td><td class="arrow">→</td><td class="neg"><ruby>飲<rt>の</rt></ruby>みたくない</td><td>不想喝</td></tr>
+      <tr><td class="jp"><ruby>食<rt>た</rt></ruby>べ</td><td class="arrow">→</td><td class="neg"><ruby>食<rt>た</rt></ruby>べたくない</td><td>不想吃</td></tr>
+      <tr><td class="jp"><ruby>行<rt>い</rt></ruby>き</td><td class="arrow">→</td><td class="neg"><ruby>行<rt>い</rt></ruby>きたくない</td><td>不想去</td></tr>
+    </table>
+  </div>
+  <div class="usage-card">
+    <div class="pattern">實際句子</div>
+    <div class="example"><ruby>今日<rt>きょう</rt></ruby>は<ruby>会社<rt>かいしゃ</rt></ruby>に<ruby>行<rt>い</rt></ruby>きたくない。<div class="zh">今天不想去公司。（純粹心情，不是不能去）</div></div>
+  </div>
+  <div class="compare-strip">
+    <span class="zh-tag">飲まない</span> = 客觀不喝　vs　<span class="jp-tag">飲みたくない</span> = 心裡不想喝，兩句意思差很多
+  </div>
+
+  <h2 class="section"><span class="num">5</span>第四種：可能形否定（能力／規則做不到）</h2>
+  <p class="lead">先要學會「可能形」（肯定：能做到），否定只是在可能形後面再變一次ない形。</p>
+  <div class="tbl-wrap">
+    <table class="conj">
+      <tr><th>辭書形</th><th>可能形（肯定）</th><th></th><th class="neg">可能形否定</th><th>中文</th></tr>
+      <tr><td class="jp"><ruby>飲<rt>の</rt></ruby>む</td><td><ruby>飲<rt>の</rt></ruby>める</td><td class="arrow">→</td><td class="neg"><ruby>飲<rt>の</rt></ruby>めない</td><td>不能喝</td></tr>
+      <tr><td class="jp"><ruby>食<rt>た</rt></ruby>べる</td><td><ruby>食<rt>た</rt></ruby>べられる</td><td class="arrow">→</td><td class="neg"><ruby>食<rt>た</rt></ruby>べられない</td><td>不能吃</td></tr>
+      <tr><td class="jp"><ruby>行<rt>い</rt></ruby>く</td><td><ruby>行<rt>い</rt></ruby>ける</td><td class="arrow">→</td><td class="neg"><ruby>行<rt>い</rt></ruby>けない</td><td>不能去</td></tr>
+    </table>
+  </div>
+  <div class="usage-card">
+    <div class="pattern">實際句子</div>
+    <div class="example"><ruby>薬<rt>くすり</rt></ruby>を<ruby>飲<rt>の</rt></ruby>んでいるので、お<ruby>酒<rt>さけ</rt></ruby>が<ruby>飲<rt>の</rt></ruby>めない。<div class="zh">因為在吃藥，所以不能喝酒。（身體／規則上做不到，不是不想）</div></div>
+  </div>
+  <div class="bubble mascot">
+    可能形本身也是一堂完整的課（在我們大綱的第 1 階 1-7），這裡先讓你知道它跟否定形怎麼疊在一起用，之後會有專門一課教可能形怎麼變。
+  </div>
+
+  <h2 class="section"><span class="num">6</span>四種放在一起比較</h2>
+  <div class="compare-strip"><span class="zh-tag">不喝</span><span class="jp-tag">飲まない</span>　客觀事實，沒有情緒</div>
+  <div class="compare-strip"><span class="zh-tag">不要喝</span><span class="jp-tag">飲まないでください</span>　叫別人不要做</div>
+  <div class="compare-strip"><span class="zh-tag">不想喝</span><span class="jp-tag">飲みたくない</span>　我心裡的意願</div>
+  <div class="compare-strip"><span class="zh-tag">不能喝</span><span class="jp-tag">飲めない</span>　能力或規則上做不到</div>
+
+  <h2 class="section"><span class="num">7</span>小測驗</h2>
+  <p class="lead">情境判斷題，選出該用哪一種否定。</p>
+  <div class="quiz-card">
+    <div class="q">Q1　你今天不舒服，醫生說你的身體狀況不適合喝酒，這是哪一種「不能喝」？</div>
+    <details><summary>看答案</summary><div class="ans">可能形否定：<ruby>飲<rt>の</rt></ruby>めない（身體條件上做不到）</div></details>
+  </div>
+  <div class="quiz-card">
+    <div class="q">Q2　你只是單純今天心情不好，不想喝酒而已，身體完全沒問題，該用哪一種？</div>
+    <details><summary>看答案</summary><div class="ans">意志否定：<ruby>飲<rt>の</rt></ruby>みたくない（純粹心裡不想）</div></details>
+  </div>
+  <div class="quiz-card">
+    <div class="q">Q3　你在跟朋友介紹自己的生活習慣，說「我平常不喝酒」，該用哪一種？</div>
+    <details><summary>看答案</summary><div class="ans">單純否定：<ruby>飲<rt>の</rt></ruby>まない（客觀描述事實）</div></details>
+  </div>
+  <div class="quiz-card">
+    <div class="q">Q4　你看到朋友要開車卻拿起酒杯，想阻止他，該用哪一種？</div>
+    <details><summary>看答案</summary><div class="ans">禁止：<ruby>飲<rt>の</rt></ruby>まないでください（叫他不要做）</div></details>
+  </div>
+
+  <div class="recap">
+    <h2>今天學到的重點</h2>
+    <ul>
+      <li>中文的「不」是一個字扛四種意思，日文用四套文法把它們分開</li>
+      <li>ない形：單純否定，客觀事實，也就是 0-3課地圖裡的「常體現在否定」</li>
+      <li>〜ないでください：禁止，叫別人不要做</li>
+      <li>〜たくない：意志否定，講的是「我心裡不想」</li>
+      <li>可能形否定：能力／規則上做不到，先會可能形，再變成ない形</li>
+      <li>判斷口訣：先問「客觀事實／叫別人／我的心情／能力規則」，答案自動對應到其中一格</li>
+    </ul>
+  </div>
+
+  <footer>0-4課　完　－　準備好了就跟老師說「下一課」吧 🐾</footer>
+</main>

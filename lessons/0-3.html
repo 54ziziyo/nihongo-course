@@ -1,0 +1,429 @@
+<title>0-3課｜敬體常體地圖＋て形・た形總複習</title>
+<style>
+  :root {
+    --paper: #ffffff;
+    --ink: #2b2620;
+    --muted: #746f63;
+    --line: #e8e5dc;
+    --red: #c1443c;
+    --teal: #3f8f82;
+    --gold: #e0a52c;
+    --indigo: #4a5b8c;
+    --card: #ffffff;
+    --card-alt: #f7f5f0;
+    --godan: #3f8f82;
+    --ichidan: #c1443c;
+    --irregular: #8c5ba0;
+  }
+  /* 固定白底，不隨系統深色模式切換 */
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Hiragino Maru Gothic ProN", "Hiragino Sans", "Noto Sans TC", "Noto Sans JP", -apple-system, sans-serif;
+    line-height: 1.8;
+    padding: 0 1.1rem 5rem;
+  }
+  main { max-width: 700px; margin: 0 auto; }
+  ruby rt { font-size: .55em; color: var(--muted); }
+
+  /* Hero */
+  .hero {
+    display: flex; align-items: center; gap: 1.2rem;
+    padding: 2.4rem 0 1.6rem; flex-wrap: wrap;
+  }
+  .hero svg { width: 92px; height: 92px; flex-shrink: 0; }
+  .hero-text .eyebrow { font-size: .78rem; letter-spacing: .16em; color: var(--red); font-weight: 800; text-transform: uppercase; }
+  .hero-text h1 { font-size: 1.55rem; font-weight: 900; margin: .3rem 0 .4rem; line-height: 1.35; text-wrap: balance; }
+  .hero-text p { font-size: .92rem; color: var(--muted); max-width: 34em; }
+
+  .bubble {
+    position: relative; background: var(--card); border: 2px solid var(--line);
+    border-radius: 16px; padding: 1rem 1.3rem; font-size: .92rem; margin: 1.4rem 0;
+  }
+  .bubble.mascot::before {
+    content: ""; position: absolute; left: 28px; top: -10px;
+    border-width: 0 10px 10px 10px; border-style: solid;
+    border-color: transparent transparent var(--card) transparent;
+  }
+
+  h2.section {
+    font-size: 1.2rem; font-weight: 900; margin: 2.6rem 0 .9rem;
+    display: flex; align-items: center; gap: .55rem;
+  }
+  h2.section .num {
+    background: var(--red); color: #fff; font-size: .8rem; font-weight: 800;
+    width: 1.8rem; height: 1.8rem; border-radius: 50%; display: flex;
+    align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  h3.sub { font-size: 1rem; font-weight: 800; margin: 1.6rem 0 .6rem; color: var(--indigo); }
+
+  p.lead { font-size: .95rem; color: var(--muted); margin-bottom: 1rem; }
+
+  /* Group legend */
+  .legend { display: flex; gap: .6rem; flex-wrap: wrap; margin-bottom: 1.2rem; }
+  .legend span {
+    font-size: .76rem; font-weight: 800; padding: .3rem .7rem; border-radius: 999px; color: #fff;
+  }
+  .tag-godan { background: var(--godan); }
+  .tag-ichidan { background: var(--ichidan); }
+  .tag-irregular { background: var(--irregular); }
+
+  /* Conjugation table */
+  .tbl-wrap { overflow-x: auto; border-radius: 12px; border: 1px solid var(--line); margin-bottom: 1.4rem; }
+  table.conj { width: 100%; border-collapse: collapse; font-size: .88rem; min-width: 560px; }
+  table.conj th {
+    background: var(--indigo); color: #fff; padding: .6rem .7rem; text-align: left;
+    font-size: .74rem; letter-spacing: .04em; text-transform: uppercase; white-space: nowrap;
+  }
+  table.conj td { padding: .6rem .7rem; border-top: 1px solid var(--line); white-space: nowrap; }
+  table.conj tr.group-godan td:first-child { border-left: 4px solid var(--godan); }
+  table.conj tr.group-ichidan td:first-child { border-left: 4px solid var(--ichidan); }
+  table.conj tr.group-irregular td:first-child { border-left: 4px solid var(--irregular); }
+  table.conj .jp { font-weight: 700; }
+  table.conj .arrow { color: var(--muted); }
+  table.conj .te { color: var(--red); font-weight: 800; }
+  table.conj .ta { color: var(--teal); font-weight: 800; }
+  .exception-note {
+    font-size: .8rem; background: #fff3d6; border: 1px dashed var(--gold);
+    border-radius: 8px; padding: .6rem .9rem; margin-top: -.6rem; margin-bottom: 1.4rem;
+  }
+
+  /* Register map (敬體/常體 × 時制) */
+  .map-wrap { overflow-x: auto; border-radius: 12px; border: 1px solid var(--line); margin-bottom: 1rem; }
+  table.map { width: 100%; border-collapse: collapse; font-size: .86rem; min-width: 600px; }
+  table.map th {
+    padding: .6rem .7rem; text-align: center; font-size: .74rem; letter-spacing: .03em;
+    color: #fff; white-space: nowrap;
+  }
+  table.map th.corner { background: var(--ink); }
+  table.map th.pos { background: var(--teal); }
+  table.map th.neg { background: var(--red); }
+  table.map td { padding: .7rem; border-top: 1px solid var(--line); text-align: center; }
+  table.map td.label {
+    text-align: left; font-weight: 800; white-space: nowrap; padding-right: 1rem;
+  }
+  tr.row-keitai td.label { color: var(--indigo); }
+  tr.row-jotai td.label { color: var(--gold); background: #fff9ec; }
+  tr.row-keitai { background: #f4f6fb; }
+  tr.row-jotai { background: #fffaf0; }
+  table.map .form-name { font-size: .7rem; color: var(--muted); display: block; margin-top: .15rem; }
+
+  .polarity-legend { display: flex; gap: 1rem; font-size: .8rem; color: var(--muted); margin-bottom: 1.1rem; }
+  .polarity-legend b.pos-dot, .polarity-legend b.neg-dot {
+    display: inline-block; width: .6rem; height: .6rem; border-radius: 50%; margin-right: .35rem;
+  }
+  .pos-dot { background: var(--teal); }
+  .neg-dot { background: var(--red); }
+
+  .float-note {
+    background: #f1eefb; border: 2px dashed var(--irregular); border-radius: 14px;
+    padding: 1rem 1.2rem; margin: 1.4rem 0; font-size: .9rem;
+  }
+  .float-note b { color: var(--irregular); }
+
+  /* Magic swap box */
+  .swap-box {
+    background: linear-gradient(135deg, #fff3d6, #ffe4d6);
+    border: 2px solid var(--gold); border-radius: 16px; padding: 1.3rem 1.4rem; margin: 1.4rem 0;
+    text-align: center;
+  }
+  .swap-box .formula { font-size: 1.3rem; font-weight: 900; margin: .5rem 0; }
+  .swap-box .formula .te { color: var(--red); }
+  .swap-box .formula .ta { color: var(--teal); }
+  .swap-box p { font-size: .88rem; color: var(--muted); margin: 0; }
+
+  /* Usage cards */
+  .usage-grid { display: grid; gap: .9rem; margin-bottom: 1.4rem; }
+  .usage-card {
+    background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+    padding: 1rem 1.2rem;
+  }
+  .usage-card .pattern { font-weight: 800; font-size: .98rem; margin-bottom: .3rem; }
+  .usage-card .pattern .te { color: var(--red); }
+  .usage-card .pattern .ta { color: var(--teal); }
+  .usage-card .meaning { font-size: .82rem; color: var(--muted); margin-bottom: .5rem; }
+  .usage-card .example { font-size: .9rem; background: var(--card-alt); border-radius: 8px; padding: .6rem .8rem; }
+  .usage-card .example .zh { font-size: .8rem; color: var(--muted); margin-top: .25rem; }
+
+  /* Mistake warning */
+  .warn-box {
+    display: flex; gap: .8rem; align-items: flex-start;
+    background: #ffeceb; border: 2px solid var(--red); border-radius: 14px;
+    padding: 1rem 1.2rem; margin: 1.6rem 0;
+  }
+  .warn-box svg { width: 34px; height: 34px; flex-shrink: 0; }
+  .warn-box b { color: var(--red); }
+  .warn-box p { font-size: .88rem; margin: .3rem 0 0; }
+
+  /* Quiz */
+  .quiz-card {
+    background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+    padding: 1rem 1.2rem; margin-bottom: .8rem;
+  }
+  .quiz-card .q { font-weight: 700; font-size: .94rem; margin-bottom: .5rem; }
+  .quiz-card details summary {
+    cursor: pointer; font-size: .84rem; font-weight: 800; color: var(--indigo);
+    list-style: none;
+  }
+  .quiz-card details summary::-webkit-details-marker { display: none; }
+  .quiz-card details summary::before { content: "👉 "; }
+  .quiz-card details[open] summary::before { content: "✅ "; }
+  .quiz-card .ans { margin-top: .5rem; font-size: .9rem; background: var(--card-alt); border-radius: 8px; padding: .6rem .8rem; }
+
+  /* Recap */
+  .recap {
+    background: var(--indigo); color: #fff; border-radius: 16px;
+    padding: 1.4rem 1.5rem; margin-top: 2.4rem;
+  }
+  .recap h2 { font-size: 1.05rem; font-weight: 900; margin-bottom: .7rem; }
+  .recap ul { margin: 0; padding-left: 1.2rem; font-size: .88rem; }
+  .recap li { margin-bottom: .4rem; }
+
+  footer { font-size: .8rem; color: var(--muted); margin-top: 2.5rem; text-align: center; }
+</style>
+
+<main>
+  <div class="hero">
+    <svg viewBox="0 0 100 100"><circle cx="50" cy="55" r="38" fill="#f4d9a8"/><ellipse cx="32" cy="30" rx="10" ry="13" fill="#f4d9a8"/><ellipse cx="68" cy="30" rx="10" ry="13" fill="#f4d9a8"/><ellipse cx="32" cy="32" rx="5" ry="7" fill="#e8b877"/><ellipse cx="68" cy="32" rx="5" ry="7" fill="#e8b877"/><circle cx="36" cy="52" r="4" fill="#2b2620"/><circle cx="64" cy="52" r="4" fill="#2b2620"/><circle cx="26" cy="62" r="6" fill="#f4a89c" opacity=".7"/><circle cx="74" cy="62" r="6" fill="#f4a89c" opacity=".7"/><path d="M40 66 Q50 74 60 66" stroke="#2b2620" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>
+    <div class="hero-text">
+      <div class="eyebrow">0-3課</div>
+      <h1>敬體常體地圖＋て形・た形　總複習</h1>
+      <p>今天的小助教是你的日文老師 🐾　這堂課除了て形跟た形怎麼變，還要先幫你把「敬體 vs 常體」跟「時態」這兩件事分開講清楚——這是你最容易搞混的地方。</p>
+    </div>
+  </div>
+
+  <div class="bubble mascot">
+    <b>老師先說重點：</b>日文動詞有<b>兩條完全獨立的線</b>：一條是「跟誰講話、多正式」（語體），一條是「意思本身」（時態、肯定否定）。這兩條線可以自由組合，不是綁在一起的。搞懂這點，後面全部都會豁然開朗。
+  </div>
+
+  <h2 class="section"><span class="num">1</span>先建地圖：敬體 vs 常體，跟「時態」是兩件事</h2>
+  <p class="lead">很多教材把這兩個維度混著講，難怪你會亂。我們用一張表把它們拆開，用「<ruby>飲<rt>の</rt></ruby>む（喝）」當例子。</p>
+
+  <div class="polarity-legend">
+    <span><b class="pos-dot"></b>肯定</span>
+    <span><b class="neg-dot"></b>否定</span>
+  </div>
+
+  <div class="map-wrap">
+    <table class="map">
+      <tr>
+        <th class="corner">語體 ＼ 時態</th>
+        <th class="pos">現在肯定</th>
+        <th class="neg">現在否定</th>
+        <th class="pos">過去肯定</th>
+        <th class="neg">過去否定</th>
+      </tr>
+      <tr class="row-keitai">
+        <td class="label">敬體<span class="form-name">（ます形系統）</span></td>
+        <td><ruby>飲<rt>の</rt></ruby>みます<span class="form-name">ます形</span></td>
+        <td><ruby>飲<rt>の</rt></ruby>みません<span class="form-name">ません形</span></td>
+        <td><ruby>飲<rt>の</rt></ruby>みました<span class="form-name">ました形</span></td>
+        <td><ruby>飲<rt>の</rt></ruby>みませんでした<span class="form-name">ませんでした形</span></td>
+      </tr>
+      <tr class="row-jotai">
+        <td class="label">常體<span class="form-name">（辭書形系統）</span></td>
+        <td><ruby>飲<rt>の</rt></ruby>む<span class="form-name">辭書形</span></td>
+        <td><ruby>飲<rt>の</rt></ruby>まない<span class="form-name">ない形</span></td>
+        <td><ruby>飲<rt>の</rt></ruby>んだ<span class="form-name">た形</span></td>
+        <td><ruby>飲<rt>の</rt></ruby>まなかった<span class="form-name">なかった形</span></td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="usage-grid">
+    <div class="usage-card">
+      <div class="pattern">敬體　→　對誰用？</div>
+      <div class="meaning">對長輩、客人、不熟的人、正式場合——你在店裡、跟供應商講話時用這行</div>
+    </div>
+    <div class="usage-card">
+      <div class="pattern">常體　→　對誰用？</div>
+      <div class="meaning">對朋友、家人、平輩，或是寫日記、接續句子中間時用這行</div>
+    </div>
+  </div>
+
+  <div class="float-note">
+    <b>那辭書形不是「常體」也是「動詞原形」嗎？</b><br>
+    對，兩個講法都對，不衝突。「辭書形」是它的<b>名字</b>（因為查字典時看到的就是這個形狀）；「常體現在肯定」是它在這張地圖上的<b>位置</b>。同一個東西，兩種描述角度而已。
+  </div>
+
+  <h2 class="section"><span class="num">2</span>那て形放在地圖的哪裡？——哪裡都不放</h2>
+  <p class="lead">這是你會亂的最後一塊拼圖：<b>て形不屬於敬體，也不屬於常體</b>，因為它根本不是用來「結束一個句子」的形狀。</p>
+  <div class="warn-box">
+    <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="42" fill="#f4d9a8"/><circle cx="38" cy="46" r="4" fill="#2b2620"/><circle cx="62" cy="46" r="4" fill="#2b2620"/><path d="M36 66 Q50 58 64 66" stroke="#2b2620" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>
+    <div>
+      <b>て形是「連接器」，不是「地圖上的一個格子」</b>
+      <p>它的工作是把兩件事接在一起（<ruby>飲<rt>の</rt></ruby>んで、<ruby>食<rt>た</rt></ruby>べます＝喝了、然後吃），或是接續になります／ください／います這些後面的東西。因為句子還沒結束，所以它不需要選「敬體還是常體」——真正決定這句話禮不禮貌的，是<b>句子最後面那個字</b>。</p>
+    </div>
+  </div>
+  <div class="usage-grid">
+    <div class="usage-card">
+      <div class="pattern">同一個て形，可以接成敬體句</div>
+      <div class="example"><ruby>飲<rt>の</rt></ruby>んで、<ruby>食<rt>た</rt></ruby>べ<b>ます</b>。<div class="zh">喝了，然後吃。（禮貌）</div></div>
+    </div>
+    <div class="usage-card">
+      <div class="pattern">也可以接成常體句</div>
+      <div class="example"><ruby>飲<rt>の</rt></ruby>んで、<ruby>食<rt>た</rt></ruby>べ<b>る</b>。<div class="zh">喝了，然後吃。（普通/朋友間）</div></div>
+    </div>
+  </div>
+  <p class="lead">看到了嗎？て形本身「飲んで」完全沒變，禮貌程度是由<b>句尾</b>那個字決定的。這就是為什麼死背「て形是敬體還是常體」永遠會卡住——因為問題本身就問錯了。</p>
+
+  <h2 class="section"><span class="num">3</span>先分組：動詞辭書形是哪一種？</h2>
+  <p class="lead">要正確變出て形／た形，第一步是看動詞辭書形的尾巴，判斷它是哪一組——這是規則，不是憑感覺猜。</p>
+  <div class="legend">
+    <span class="tag-godan">五段動詞（グループ1）</span>
+    <span class="tag-ichidan">一段動詞（グループ2）</span>
+    <span class="tag-irregular">不規則動詞（グループ3）</span>
+  </div>
+
+  <div class="usage-grid">
+    <div class="usage-card">
+      <div class="pattern">五段動詞（う・つ・る・ぬ・む・ぶ・く・ぐ・す 結尾）</div>
+      <div class="meaning">最多動詞屬於這組，尾巴變化最多種，等一下的表格是重點</div>
+      <div class="example">例：<ruby>買<rt>か</rt></ruby>う、<ruby>飲<rt>の</rt></ruby>む、<ruby>書<rt>か</rt></ruby>く、<ruby>話<rt>はな</rt></ruby>す</div>
+    </div>
+    <div class="usage-card">
+      <div class="pattern">一段動詞（え段＋る／い段＋る 結尾）</div>
+      <div class="meaning">最簡單，把「る」拿掉就對了</div>
+      <div class="example">例：<ruby>食<rt>た</rt></ruby>べる、<ruby>見<rt>み</rt></ruby>る、<ruby>寝<rt>ね</rt></ruby>る</div>
+    </div>
+    <div class="usage-card">
+      <div class="pattern">不規則動詞（只有兩個）</div>
+      <div class="meaning">する・来る　這兩個沒有規則，直接背發音就好</div>
+      <div class="example">例：する、<ruby>来<rt>く</rt></ruby>る</div>
+    </div>
+  </div>
+
+  <h2 class="section"><span class="num">4</span>て形變化總表</h2>
+  <p class="lead">五段動詞照「尾巴音」分組變化，一段跟不規則動詞直接記整組。</p>
+  <div class="tbl-wrap">
+    <table class="conj">
+      <tr><th>組別</th><th>尾巴</th><th>辭書形</th><th></th><th class="te">て形</th><th>中文</th></tr>
+      <tr class="group-godan"><td>五段</td><td>う・つ・る</td><td class="jp"><ruby>買<rt>か</rt></ruby>う</td><td class="arrow">→</td><td class="te"><ruby>買<rt>か</rt></ruby>って</td><td>買</td></tr>
+      <tr class="group-godan"><td>五段</td><td>ぬ・む・ぶ</td><td class="jp"><ruby>飲<rt>の</rt></ruby>む</td><td class="arrow">→</td><td class="te"><ruby>飲<rt>の</rt></ruby>んで</td><td>喝</td></tr>
+      <tr class="group-godan"><td>五段</td><td>く</td><td class="jp"><ruby>書<rt>か</rt></ruby>く</td><td class="arrow">→</td><td class="te"><ruby>書<rt>か</rt></ruby>いて</td><td>寫</td></tr>
+      <tr class="group-godan"><td>五段</td><td>ぐ</td><td class="jp"><ruby>泳<rt>およ</rt></ruby>ぐ</td><td class="arrow">→</td><td class="te"><ruby>泳<rt>およ</rt></ruby>いで</td><td>游泳</td></tr>
+      <tr class="group-godan"><td>五段</td><td>す</td><td class="jp"><ruby>話<rt>はな</rt></ruby>す</td><td class="arrow">→</td><td class="te"><ruby>話<rt>はな</rt></ruby>して</td><td>說話</td></tr>
+      <tr class="group-ichidan"><td>一段</td><td>る 拿掉</td><td class="jp"><ruby>食<rt>た</rt></ruby>べる</td><td class="arrow">→</td><td class="te"><ruby>食<rt>た</rt></ruby>べて</td><td>吃</td></tr>
+      <tr class="group-ichidan"><td>一段</td><td>る 拿掉</td><td class="jp"><ruby>見<rt>み</rt></ruby>る</td><td class="arrow">→</td><td class="te"><ruby>見<rt>み</rt></ruby>て</td><td>看</td></tr>
+      <tr class="group-irregular"><td>不規則</td><td>—</td><td class="jp">する</td><td class="arrow">→</td><td class="te">して</td><td>做</td></tr>
+      <tr class="group-irregular"><td>不規則</td><td>—</td><td class="jp"><ruby>来<rt>く</rt></ruby>る</td><td class="arrow">→</td><td class="te"><ruby>来<rt>き</rt></ruby>て</td><td>來</td></tr>
+    </table>
+  </div>
+  <div class="exception-note">⚠️ <b>唯一的例外：</b>「<ruby>行<rt>い</rt></ruby>く（去）」不照く的規則變「<ruby>行<rt>い</rt></ruby>いて」，而是特別變成「<b><ruby>行<rt>い</rt></ruby>って</b>」，這個要單獨背起來。</div>
+
+  <h2 class="section"><span class="num">5</span>魔法交換：た形就是這樣來的</h2>
+  <p class="lead">好消息——上面整張表你已經會了 90%，因為た形只是把て形的尾巴換一下。對照第 1 節的地圖，た形就是「常體過去肯定」那一格。</p>
+  <div class="swap-box">
+    <div class="formula"><span class="te">て</span> → <span class="ta">た</span>　／　<span class="te">で</span> → <span class="ta">だ</span></div>
+    <p>把て形的最後一個字，「て」換成「た」、「で」換成「だ」，就是た形了。規則完全共用，不用重新背一次表格。</p>
+  </div>
+
+  <div class="tbl-wrap">
+    <table class="conj">
+      <tr><th>辭書形</th><th class="te">て形</th><th class="ta">た形</th><th>中文</th></tr>
+      <tr><td class="jp"><ruby>買<rt>か</rt></ruby>う</td><td class="te"><ruby>買<rt>か</rt></ruby>って</td><td class="ta"><ruby>買<rt>か</rt></ruby>った</td><td>買</td></tr>
+      <tr><td class="jp"><ruby>飲<rt>の</rt></ruby>む</td><td class="te"><ruby>飲<rt>の</rt></ruby>んで</td><td class="ta"><ruby>飲<rt>の</rt></ruby>んだ</td><td>喝</td></tr>
+      <tr><td class="jp"><ruby>書<rt>か</rt></ruby>く</td><td class="te"><ruby>書<rt>か</rt></ruby>いて</td><td class="ta"><ruby>書<rt>か</rt></ruby>いた</td><td>寫</td></tr>
+      <tr><td class="jp"><ruby>食<rt>た</rt></ruby>べる</td><td class="te"><ruby>食<rt>た</rt></ruby>べて</td><td class="ta"><ruby>食<rt>た</rt></ruby>べた</td><td>吃</td></tr>
+      <tr><td class="jp">する</td><td class="te">して</td><td class="ta">した</td><td>做</td></tr>
+      <tr><td class="jp"><ruby>来<rt>く</rt></ruby>る</td><td class="te"><ruby>来<rt>き</rt></ruby>て</td><td class="ta"><ruby>来<rt>き</rt></ruby>た</td><td>來</td></tr>
+    </table>
+  </div>
+
+  <h2 class="section"><span class="num">6</span>用法差在哪？</h2>
+  <p class="lead">變化規則一樣，但用途完全不同——這才是重點。</p>
+  <h3 class="sub"><span class="te">て形</span>：句子還沒講完，後面要接東西</h3>
+  <div class="usage-grid">
+    <div class="usage-card">
+      <div class="pattern"><span class="te">て</span>形＋ください</div>
+      <div class="meaning">請求對方做某事</div>
+      <div class="example">
+        <ruby>待<rt>ま</rt></ruby>って<b>ください</b>。
+        <div class="zh">請等一下。</div>
+      </div>
+    </div>
+    <div class="usage-card">
+      <div class="pattern"><span class="te">て</span>形＋います</div>
+      <div class="meaning">正在做某事 / 目前的狀態</div>
+      <div class="example">
+        <ruby>今<rt>いま</rt></ruby>、<ruby>働<rt>はたら</rt></ruby>いて<b>います</b>。
+        <div class="zh">我現在正在工作。</div>
+      </div>
+    </div>
+    <div class="usage-card">
+      <div class="pattern"><span class="te">て</span>形＋もいいです</div>
+      <div class="meaning">徵求許可／給予許可</div>
+      <div class="example">
+        ここで<ruby>写真<rt>しゃしん</rt></ruby>を<ruby>撮<rt>と</rt></ruby>って<b>もいいですか</b>。
+        <div class="zh">可以在這裡拍照嗎？</div>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="sub"><span class="ta">た形</span>：句子講完就結束，單純講「過去發生的事」</h3>
+  <div class="usage-grid">
+    <div class="usage-card">
+      <div class="pattern"><span class="ta">た</span>形（句尾，常體）</div>
+      <div class="meaning">過去式，動作已經完成——這句是跟朋友講話的口氣</div>
+      <div class="example">
+        <ruby>昨日<rt>きのう</rt></ruby>、これを<ruby>買<rt>か</rt></ruby>っ<b>た</b>。
+        <div class="zh">昨天買了這個。</div>
+      </div>
+    </div>
+    <div class="usage-card">
+      <div class="pattern"><span class="ta">た</span>形＋ことがあります</div>
+      <div class="meaning">曾經有過的經驗——這裡た形接在句子中間，後面接敬體ます結尾</div>
+      <div class="example">
+        <ruby>日本<rt>にほん</rt></ruby>に<ruby>行<rt>い</rt></ruby>っ<b>た</b>ことがあります。
+        <div class="zh">我去過日本。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="warn-box">
+    <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="42" fill="#f4d9a8"/><circle cx="38" cy="46" r="4" fill="#2b2620"/><circle cx="62" cy="46" r="4" fill="#2b2620"/><path d="M36 66 Q50 58 64 66" stroke="#2b2620" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>
+    <div>
+      <b>老師的提醒</b>
+      <p>た形本身是「常體過去」，但它可以像上面第二個例子一樣，接在句子中間、後面再接敬體的ます結尾——這不代表た形變敬體了，只是它在這裡不是句尾，禮貌程度依然是看整句最後那個字決定。</p>
+    </div>
+  </div>
+
+  <h2 class="section"><span class="num">7</span>小測驗</h2>
+  <p class="lead">試著自己變變看，答不出來也沒關係，點開答案對一下就好。</p>
+
+  <div class="quiz-card">
+    <div class="q">Q1　「<ruby>飲<rt>の</rt></ruby>む」的て形和た形分別是？</div>
+    <details><summary>看答案</summary><div class="ans">て形：<ruby>飲<rt>の</rt></ruby>んで／た形：<ruby>飲<rt>の</rt></ruby>んだ（む・ぬ・ぶ結尾 → んで／んだ）</div></details>
+  </div>
+  <div class="quiz-card">
+    <div class="q">Q2　「<ruby>見<rt>み</rt></ruby>る」的て形是？（提示：一段動詞）</div>
+    <details><summary>看答案</summary><div class="ans"><ruby>見<rt>み</rt></ruby>て（一段動詞直接把る拿掉，加て）</div></details>
+  </div>
+  <div class="quiz-card">
+    <div class="q">Q3　「<ruby>行<rt>い</rt></ruby>く」的て形是「<ruby>行<rt>い</rt></ruby>いて」嗎？</div>
+    <details><summary>看答案</summary><div class="ans">不是！這是唯一的例外，正確答案是「<ruby>行<rt>い</rt></ruby>って」，一定要單獨背起來。</div></details>
+  </div>
+  <div class="quiz-card">
+    <div class="q">Q4　「<ruby>飲<rt>の</rt></ruby>む」放進地圖裡，屬於「敬體」還是「常體」？屬於哪一格？</div>
+    <details><summary>看答案</summary><div class="ans">常體，而且是「常體現在肯定」，也就是辭書形本人。</div></details>
+  </div>
+  <div class="quiz-card">
+    <div class="q">Q5　て形本身屬於敬體還是常體？</div>
+    <details><summary>看答案</summary><div class="ans">都不是。て形是連接用的，不落在地圖的任何一格裡，禮貌程度由句尾決定。</div></details>
+  </div>
+
+  <div class="recap">
+    <h2>今天學到的重點</h2>
+    <ul>
+      <li>敬體／常體是「跟誰講話」的選擇，時態是「意思」本身，這是兩條獨立的線</li>
+      <li>辭書形＝常體現在肯定、ない形＝常體現在否定、た形＝常體過去肯定、なかった形＝常體過去否定</li>
+      <li>ます／ません／ました／ませんでした 這一整套是敬體</li>
+      <li>て形不屬於敬體也不屬於常體，它是連接用的，禮貌程度看句尾</li>
+      <li>動詞先分三組：五段／一段／不規則，變化規則完全不同</li>
+      <li>た形 = 把て形的「て/で」換成「た/だ」，規則完全共用</li>
+    </ul>
+  </div>
+
+  <footer>0-3課　完　－　準備好了就跟老師說「下一課」吧 🐾</footer>
+</main>

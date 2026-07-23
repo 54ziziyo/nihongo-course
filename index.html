@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>阿凱日文教室｜課綱</title>
+<style>
+  :root{
+    --paper:#fffdf9; --ink:#2b2a33; --ink-soft:#6b6875;
+    --sakura:#ff6f91; --sakura-soft:#ffe3ea;
+    --indigo:#33528e; --indigo-soft:#e7edf7;
+    --matcha:#3fa76b; --matcha-soft:#e3f5ea;
+    --plum:#a8558f; --line:#ece7de; --card:#ffffff;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:"Hiragino Kaku Gothic ProN","Yu Gothic","Noto Sans TC","Noto Sans JP",system-ui,sans-serif;
+    line-height:1.7; padding:0 0 90px;
+  }
+  header.top{
+    padding:56px 24px 34px; text-align:center;
+    background:radial-gradient(circle at 15% 20%, var(--sakura-soft) 0%, transparent 45%),
+               radial-gradient(circle at 85% 0%, var(--indigo-soft) 0%, transparent 40%);
+  }
+  .mascot{width:80px;height:80px;margin:0 auto 12px;display:block;}
+  header.top h1{margin:0 0 8px;font-size:clamp(28px,5.5vw,42px);text-wrap:balance;}
+  header.top h1 .accent{color:var(--sakura);}
+  header.top p{margin:0;color:var(--ink-soft);font-size:15.5px;}
+
+  main{max-width:860px;margin:0 auto;padding:0 20px;}
+
+  .stage{margin:40px 0;}
+  .stage-head{display:flex;align-items:baseline;gap:10px;margin-bottom:14px;}
+  .stage-head .num{
+    font-size:13px;font-weight:800;color:#fff;background:var(--indigo);
+    padding:3px 12px;border-radius:999px;
+  }
+  .stage-head h2{margin:0;font-size:20px;}
+
+  .lesson-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;}
+  .lesson-card{
+    display:block;background:var(--card);border:1px solid var(--line);border-radius:16px;
+    padding:18px 20px;text-decoration:none;color:inherit;transition:transform .12s ease, box-shadow .12s ease;
+  }
+  .lesson-card:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(43,42,51,.08);border-color:var(--indigo);}
+  .lesson-card .title{font-weight:700;font-size:16px;margin-bottom:6px;}
+  .lesson-card .desc{font-size:13.5px;color:var(--ink-soft);}
+  .lesson-card .badge{
+    display:inline-block;margin-top:10px;font-size:11.5px;font-weight:700;
+    padding:2px 9px;border-radius:999px;
+  }
+  .badge.done{background:var(--matcha-soft);color:var(--matcha);}
+  .badge.next{background:var(--sakura-soft);color:var(--sakura);}
+
+  .placeholder{
+    border:1.5px dashed var(--line);border-radius:16px;padding:18px 20px;
+    color:var(--ink-soft);font-size:13.5px;display:flex;align-items:center;
+  }
+
+  footer{text-align:center;color:var(--ink-soft);font-size:12.5px;margin-top:70px;}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <svg class="mascot" viewBox="0 0 100 100" aria-hidden="true">
+    <circle cx="50" cy="58" r="34" fill="#ffe3ea"/>
+    <path d="M24 34 L34 10 L44 32 Z" fill="#ffe3ea"/>
+    <path d="M76 34 L66 10 L56 32 Z" fill="#ffe3ea"/>
+    <circle cx="38" cy="58" r="4" fill="#2b2a33"/>
+    <circle cx="62" cy="58" r="4" fill="#2b2a33"/>
+    <ellipse cx="50" cy="70" rx="6" ry="4" fill="#ff6f91"/>
+    <path d="M42 46 q8 -6 16 0" stroke="#a8558f" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  </svg>
+  <h1>阿凱日文教室 <span class="accent">課綱</span></h1>
+  <p>從零開始到 N3 前的完整路線，點進去就是每堂課的講義</p>
+</header>
+
+<main>
+
+  <div class="stage">
+    <div class="stage-head"><span class="num">第 0 階</span><h2>地基重建</h2></div>
+    <div class="lesson-grid">
+      <a class="lesson-card" href="lessons/0-3.html">
+        <div class="title">0-3課｜敬體常體地圖</div>
+        <div class="desc">て形・た形總複習，釐清辭書形/ない形/た形分別對應的語體</div>
+        <span class="badge done">已完成</span>
+      </a>
+      <a class="lesson-card" href="lessons/0-4.html">
+        <div class="title">0-4課｜否定形全解析</div>
+        <div class="desc">不喝/不要喝/不想喝/不能喝，四種否定的拆解</div>
+        <span class="badge done">已完成</span>
+      </a>
+      <a class="lesson-card" href="lessons/fukushuu.html">
+        <div class="title">動詞總表＋N5小測驗＋聽力</div>
+        <div class="desc">39個常用動詞八變化總表、15題文法測驗、8題聽力練習</div>
+        <span class="badge done">已完成</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="stage">
+    <div class="stage-head"><span class="num">第 1 階</span><h2>N5 核心文法</h2></div>
+    <div class="lesson-grid">
+      <a class="lesson-card" href="lessons/n5-grammar.html">
+        <div class="title">N5 文法總整理</div>
+        <div class="desc">句型/助動詞、形容詞、助詞、指示詞、其他基本句型的完整範圍地圖</div>
+        <span class="badge next">重點複習</span>
+      </a>
+      <div class="placeholder">名詞句、可能形、比較句細部練習——準備中</div>
+    </div>
+  </div>
+
+  <div class="stage">
+    <div class="stage-head"><span class="num">第 2 階</span><h2>N5→N4 橋接</h2></div>
+    <div class="lesson-grid">
+      <div class="placeholder">授受動詞方向圖解、條件形一（たら/と）、意向形、業務日文——準備中</div>
+    </div>
+  </div>
+
+  <div class="stage">
+    <div class="stage-head"><span class="num">第 3 階</span><h2>N4 核心文法</h2></div>
+    <div class="lesson-grid">
+      <div class="placeholder">普通形、受身形、使役形、條件形二（ば/なら）——準備中</div>
+    </div>
+  </div>
+
+  <div class="stage">
+    <div class="stage-head"><span class="num">第 4-5 階</span><h2>N4→N3 橋接、N3 核心</h2></div>
+    <div class="lesson-grid">
+      <div class="placeholder">授受動詞進階、使役受身形、狀態變化、逆接進階——準備中</div>
+    </div>
+  </div>
+
+</main>
+
+<footer>阿凱日文教室・每完成一堂新講義就會自動出現在這裡</footer>
+
+</body>
+</html>

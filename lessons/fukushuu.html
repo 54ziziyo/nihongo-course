@@ -1,0 +1,594 @@
+<title>動詞總表＋N5小測驗</title>
+<style>
+  :root{
+    --paper:#fffdf9;
+    --ink:#2b2a33;
+    --ink-soft:#6b6875;
+    --sakura:#ff6f91;
+    --sakura-soft:#ffe3ea;
+    --indigo:#33528e;
+    --indigo-soft:#e7edf7;
+    --matcha:#3fa76b;
+    --matcha-soft:#e3f5ea;
+    --plum:#a8558f;
+    --line:#ece7de;
+    --card:#ffffff;
+    --wrong:#e4572e;
+    --wrong-soft:#fde6df;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Hiragino Kaku Gothic ProN","Yu Gothic","Noto Sans TC","Noto Sans JP",system-ui,sans-serif;
+    line-height:1.7;
+    padding:0 0 80px;
+  }
+  ruby rt{font-size:0.55em;color:var(--ink-soft);font-weight:600;}
+
+  header.top{
+    padding:44px 24px 28px;
+    text-align:center;
+    background:
+      radial-gradient(circle at 15% 20%, var(--sakura-soft) 0%, transparent 45%),
+      radial-gradient(circle at 85% 0%, var(--indigo-soft) 0%, transparent 40%);
+  }
+  header.top h1{
+    margin:0 0 8px;
+    font-size:clamp(26px,5vw,38px);
+    letter-spacing:.02em;
+    text-wrap:balance;
+  }
+  header.top h1 .accent{color:var(--sakura);}
+  header.top p{margin:0;color:var(--ink-soft);font-size:15px;}
+
+  .mascot{width:76px;height:76px;margin:0 auto 10px;display:block;}
+
+  nav.tabs{
+    max-width:760px;
+    margin:0 auto 32px;
+    padding:0 20px;
+    display:flex;
+    gap:10px;
+    justify-content:center;
+  }
+  nav.tabs button{
+    font:inherit;
+    font-weight:700;
+    font-size:15px;
+    padding:11px 22px;
+    border-radius:999px;
+    border:2px solid var(--line);
+    background:var(--card);
+    color:var(--ink-soft);
+    cursor:pointer;
+    transition:all .15s ease;
+  }
+  nav.tabs button.active{
+    border-color:var(--sakura);
+    background:var(--sakura);
+    color:#fff;
+    box-shadow:0 4px 14px rgba(255,111,145,.35);
+  }
+  nav.tabs button:focus-visible{outline:3px solid var(--indigo);outline-offset:2px;}
+
+  main{max-width:900px;margin:0 auto;padding:0 20px;}
+  section.panel{display:none;}
+  section.panel.active{display:block;animation:fade .25s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+
+  /* ---------- 動詞總表 ---------- */
+  .group-heading{
+    display:flex;align-items:baseline;gap:10px;
+    margin:36px 0 14px;
+  }
+  .group-heading:first-child{margin-top:0;}
+  .group-heading h2{margin:0;font-size:20px;}
+  .group-heading .tag{
+    font-size:12px;font-weight:700;color:#fff;
+    background:var(--indigo);padding:3px 10px;border-radius:999px;
+  }
+  .group-heading.godan .tag{background:var(--indigo);}
+  .group-heading.ichidan .tag{background:var(--matcha);}
+  .group-heading.irregular .tag{background:var(--plum);}
+
+  .verb-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;}
+  .verb-card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:18px 18px 16px;
+  }
+  .verb-card .head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:10px;}
+  .verb-card .head .kanji{font-size:22px;font-weight:700;}
+  .verb-card .head .mean{font-size:13px;color:var(--ink-soft);}
+  .verb-card table{width:100%;border-collapse:collapse;font-size:14px;}
+  .verb-card td{padding:5px 4px;border-bottom:1px dashed var(--line);}
+  .verb-card td.label{color:var(--ink-soft);font-size:12px;width:38%;white-space:nowrap;}
+  .verb-card tr:last-child td{border-bottom:none;}
+
+  /* ---------- 測驗 ---------- */
+  .quiz-top{
+    display:flex;align-items:center;justify-content:space-between;
+    margin-bottom:14px;font-size:14px;color:var(--ink-soft);
+  }
+  .progress-bar{
+    height:8px;border-radius:99px;background:var(--line);overflow:hidden;margin-bottom:26px;
+  }
+  .progress-bar > div{
+    height:100%;background:linear-gradient(90deg,var(--sakura),var(--indigo));
+    transition:width .3s ease;
+  }
+  .quiz-card{
+    background:var(--card);border:1px solid var(--line);border-radius:20px;
+    padding:28px 26px;
+  }
+  .q-text{font-size:19px;font-weight:700;margin:0 0 20px;text-wrap:balance;}
+  .q-text .fill{color:var(--sakura);font-weight:800;}
+  .options{display:grid;gap:10px;}
+  .opt{
+    text-align:left;font:inherit;font-size:16px;
+    padding:13px 16px;border-radius:12px;border:2px solid var(--line);
+    background:var(--paper);cursor:pointer;transition:all .12s ease;
+  }
+  .opt:hover:not(:disabled){border-color:var(--indigo);}
+  .opt:focus-visible{outline:3px solid var(--indigo);outline-offset:2px;}
+  .opt.correct{border-color:var(--matcha);background:var(--matcha-soft);font-weight:700;}
+  .opt.wrong{border-color:var(--wrong);background:var(--wrong-soft);}
+  .opt:disabled{cursor:default;}
+
+  .explain{
+    margin-top:18px;padding:16px 18px;border-radius:12px;
+    background:var(--indigo-soft);font-size:14.5px;display:none;
+  }
+  .explain.show{display:block;}
+  .explain b{color:var(--indigo);}
+
+  .quiz-actions{display:flex;justify-content:flex-end;margin-top:20px;}
+  .btn{
+    font:inherit;font-weight:700;font-size:15px;cursor:pointer;
+    padding:11px 24px;border-radius:999px;border:none;
+    background:var(--sakura);color:#fff;
+  }
+  .btn:disabled{background:var(--line);color:var(--ink-soft);cursor:not-allowed;}
+  .btn.ghost{background:transparent;border:2px solid var(--indigo);color:var(--indigo);}
+
+  .result{text-align:center;padding:20px 10px;}
+  .result .score{font-size:48px;font-weight:800;color:var(--sakura);margin:6px 0;}
+  .result p{color:var(--ink-soft);margin:4px 0 22px;}
+  .result .btn{margin:0 6px;}
+
+  footer{text-align:center;color:var(--ink-soft);font-size:12.5px;margin-top:60px;}
+
+  /* ---------- 聽力 ---------- */
+  .play-btn{
+    display:inline-flex;align-items:center;gap:8px;
+    font:inherit;font-weight:700;font-size:15px;cursor:pointer;
+    padding:10px 20px;border-radius:999px;border:2px solid var(--indigo);
+    background:var(--indigo-soft);color:var(--indigo);margin-bottom:18px;
+  }
+  .play-btn:hover{background:var(--indigo);color:#fff;}
+  .play-btn svg{width:16px;height:16px;}
+  .listen-hint{font-size:13px;color:var(--ink-soft);margin:-10px 0 18px;}
+  .transcript{
+    display:none;margin-top:14px;padding:14px 16px;border-radius:12px;
+    background:var(--sakura-soft);font-size:15px;
+  }
+  .transcript.show{display:block;}
+  .transcript b{color:var(--sakura);}
+  .no-voice{
+    display:none;margin-bottom:16px;padding:12px 16px;border-radius:12px;
+    background:var(--wrong-soft);color:var(--wrong);font-size:13.5px;
+  }
+  .no-voice.show{display:block;}
+</style>
+
+<header class="top">
+  <svg class="mascot" viewBox="0 0 100 100" aria-hidden="true">
+    <circle cx="50" cy="58" r="34" fill="#ffe3ea"/>
+    <path d="M24 34 L34 10 L44 32 Z" fill="#ffe3ea"/>
+    <path d="M76 34 L66 10 L56 32 Z" fill="#ffe3ea"/>
+    <circle cx="38" cy="58" r="4" fill="#2b2a33"/>
+    <circle cx="62" cy="58" r="4" fill="#2b2a33"/>
+    <ellipse cx="50" cy="70" rx="6" ry="4" fill="#ff6f91"/>
+    <path d="M42 46 q8 -6 16 0" stroke="#a8558f" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  </svg>
+  <h1>動詞總表 <span class="accent">＆</span> N5 小測驗</h1>
+  <p>飲みます型的動詞家族，加上邊考邊學的 N5 練習題</p>
+</header>
+
+<nav class="tabs">
+  <button class="active" data-panel="verbs">常用動詞總表</button>
+  <button data-panel="quiz">N5 文法小測驗</button>
+  <button data-panel="listen">聽力練習</button>
+</nav>
+
+<main>
+  <section class="panel active" id="panel-verbs"></section>
+  <section class="panel" id="panel-quiz">
+    <div class="quiz-top">
+      <span id="q-counter">第 1 / 15 題</span>
+      <span id="q-score">目前分數：0</span>
+    </div>
+    <div class="progress-bar"><div id="progress-fill" style="width:6.6%"></div></div>
+    <div class="quiz-card" id="quiz-card"></div>
+  </section>
+  <section class="panel" id="panel-listen">
+    <div class="no-voice" id="no-voice">這個瀏覽器目前抓不到日文語音，可以換 Chrome 或確認系統有安裝日文語音包再試一次。</div>
+    <div class="quiz-top">
+      <span id="l-counter">第 1 / 8 題</span>
+      <span id="l-score">目前分數：0</span>
+    </div>
+    <div class="progress-bar"><div id="l-progress-fill" style="width:12.5%"></div></div>
+    <div class="quiz-card" id="listen-card"></div>
+  </section>
+</main>
+
+<footer>阿凱日文教室・練習用自製題，非正式 JLPT 考古題</footer>
+
+<script>
+// ---------------- 動詞資料 ----------------
+const verbs = [
+  {kanji:"飲",reading:"の",group:"godan",mean:"喝",forms:["みます","みません","みました","みませんでした","む","まない","んだ","まなかった"]},
+  {kanji:"話",reading:"はな",group:"godan",mean:"說、講",forms:["します","しません","しました","しませんでした","す","さない","した","さなかった"]},
+  {kanji:"聞",reading:"き",group:"godan",mean:"聽、問",forms:["きます","きません","きました","きませんでした","く","かない","いた","かなかった"]},
+  {kanji:"書",reading:"か",group:"godan",mean:"寫",forms:["きます","きません","きました","きませんでした","く","かない","いた","かなかった"]},
+  {kanji:"読",reading:"よ",group:"godan",mean:"讀、念",forms:["みます","みません","みました","みませんでした","む","まない","んだ","まなかった"]},
+  {kanji:"買",reading:"か",group:"godan",mean:"買",forms:["います","いません","いました","いませんでした","う","わない","った","わなかった"]},
+  {kanji:"待",reading:"ま",group:"godan",mean:"等",forms:["ちます","ちません","ちました","ちませんでした","つ","たない","った","たなかった"]},
+  {kanji:"行",reading:"い",group:"godan",mean:"去（た形例外：行った）",forms:["きます","きません","きました","きませんでした","く","かない","った","かなかった"]},
+  {kanji:"帰",reading:"かえ",group:"godan",mean:"回去（る結尾但屬五段）",forms:["ります","りません","りました","りませんでした","る","らない","った","らなかった"]},
+  {kanji:"食",reading:"た",group:"ichidan",mean:"吃",forms:["べます","べません","べました","べませんでした","べる","べない","べた","べなかった"]},
+  {kanji:"見",reading:"み",group:"ichidan",mean:"看",forms:["ます","ません","ました","ませんでした","る","ない","た","なかった"]},
+  {kanji:"起",reading:"お",group:"ichidan",mean:"起床",forms:["きます","きません","きました","きませんでした","きる","きない","きた","きなかった"]},
+  {kanji:"会",reading:"あ",group:"godan",mean:"見面",forms:["います","いません","いました","いませんでした","う","わない","った","わなかった"]},
+  {kanji:"持",reading:"も",group:"godan",mean:"拿、持有",forms:["ちます","ちません","ちました","ちませんでした","つ","たない","った","たなかった"]},
+  {kanji:"作",reading:"つく",group:"godan",mean:"做、製作",forms:["ります","りません","りました","りませんでした","る","らない","った","らなかった"]},
+  {kanji:"売",reading:"う",group:"godan",mean:"賣",forms:["ります","りません","りました","りませんでした","る","らない","った","らなかった"]},
+  {kanji:"撮",reading:"と",group:"godan",mean:"拍照",forms:["ります","りません","りました","りませんでした","る","らない","った","らなかった"]},
+  {kanji:"送",reading:"おく",group:"godan",mean:"寄送、傳送",forms:["ります","りません","りました","りませんでした","る","らない","った","らなかった"]},
+  {kanji:"走",reading:"はし",group:"godan",mean:"跑（る結尾但屬五段）",forms:["ります","りません","りました","りませんでした","る","らない","った","らなかった"]},
+  {kanji:"入",reading:"はい",group:"godan",mean:"進入（る結尾但屬五段）",forms:["ります","りません","りました","りませんでした","る","らない","った","らなかった"]},
+  {kanji:"知",reading:"し",group:"godan",mean:"知道（る結尾但屬五段，常用「知っています」表示狀態）",forms:["ります","りません","りました","りませんでした","る","らない","った","らなかった"]},
+  {kanji:"洗",reading:"あら",group:"godan",mean:"洗",forms:["います","いません","いました","いませんでした","う","わない","った","わなかった"]},
+  {kanji:"使",reading:"つか",group:"godan",mean:"使用",forms:["います","いません","いました","いませんでした","う","わない","った","わなかった"]},
+  {kanji:"休",reading:"やす",group:"godan",mean:"休息、請假",forms:["みます","みません","みました","みませんでした","む","まない","んだ","まなかった"]},
+  {kanji:"遊",reading:"あそ",group:"godan",mean:"玩",forms:["びます","びません","びました","びませんでした","ぶ","ばない","んだ","ばなかった"]},
+  {kanji:"泳",reading:"およ",group:"godan",mean:"游泳",forms:["ぎます","ぎません","ぎました","ぎませんでした","ぐ","がない","いだ","がなかった"]},
+  {kanji:"働",reading:"はたら",group:"godan",mean:"工作",forms:["きます","きません","きました","きませんでした","く","かない","いた","かなかった"]},
+  {kanji:"泣",reading:"な",group:"godan",mean:"哭",forms:["きます","きません","きました","きませんでした","く","かない","いた","かなかった"]},
+  {kanji:"急",reading:"いそ",group:"godan",mean:"趕快、急",forms:["ぎます","ぎません","ぎました","ぎませんでした","ぐ","がない","いだ","がなかった"]},
+  {kanji:"寝",reading:"ね",group:"ichidan",mean:"睡覺",forms:["ます","ません","ました","ませんでした","る","ない","た","なかった"]},
+  {kanji:"出",reading:"で",group:"ichidan",mean:"出去、出門",forms:["ます","ません","ました","ませんでした","る","ない","た","なかった"]},
+  {kanji:"教",reading:"おし",group:"ichidan",mean:"教",forms:["えます","えません","えました","えませんでした","える","えない","えた","えなかった"]},
+  {kanji:"覚",reading:"おぼ",group:"ichidan",mean:"記住",forms:["えます","えません","えました","えませんでした","える","えない","えた","えなかった"]},
+  {kanji:"忘",reading:"わす",group:"ichidan",mean:"忘記",forms:["れます","れません","れました","れませんでした","れる","れない","れた","れなかった"]},
+  {kanji:"開",reading:"あ",group:"ichidan",mean:"打開",forms:["けます","けません","けました","けませんでした","ける","けない","けた","けなかった"]},
+  {kanji:"閉",reading:"し",group:"ichidan",mean:"關閉",forms:["めます","めません","めました","めませんでした","める","めない","めた","めなかった"]},
+  {kanji:"借",reading:"か",group:"ichidan",mean:"借入",forms:["ります","りません","りました","りませんでした","りる","りない","りた","りなかった"]},
+  {kanji:"疲",reading:"つか",group:"ichidan",mean:"累",forms:["れます","れません","れました","れませんでした","れる","れない","れた","れなかった"]},
+  {kanji:"降",reading:"お",group:"ichidan",mean:"下車",forms:["ります","りません","りました","りませんでした","りる","りない","りた","りなかった"]},
+];
+const groupMeta = {
+  godan:{title:"五段動詞（第一類）",note:"語尾隨變化，字典形結尾多樣（う・く・す・つ・む…）"},
+  ichidan:{title:"一段動詞（第二類）",note:"去掉る直接加語尾，最規律好記"},
+  irregular:{title:"不規則動詞（第三類）",note:"する／来る，變化要整個背下來"},
+};
+
+function renderVerbForm(v, formIndex){
+  // masu/masen/mashita/masendeshita/nai/ta/nakatta 都保留完整讀音在 kanji 上
+  return `<ruby>${v.kanji}<rt>${v.reading}</rt></ruby>${v.forms[formIndex]}`;
+}
+
+function verbCard(v){
+  const labels = ["ます形","ません形","ました形","ませんでした形","辞書形","ない形","た形","なかった形"];
+  const rows = labels.map((l,i)=>`<tr><td class="label">${l}</td><td>${renderVerbForm(v,i)}</td></tr>`).join("");
+  return `<div class="verb-card">
+    <div class="head">
+      <span class="kanji"><ruby>${v.kanji}<rt>${v.reading}</rt></ruby>${v.forms[4]}</span>
+      <span class="mean">${v.mean}</span>
+    </div>
+    <table>${rows}</table>
+  </div>`;
+}
+
+// 来る / する 個別處理（讀音每個形不同或無漢字）
+const kuru = {
+  head:"<ruby>来</ruby>る", mean:"來（讀音每個形都不同，要整組背）",
+  rows:[
+    ["ます形","<ruby>来<rt>き</rt></ruby>ます"],
+    ["ません形","<ruby>来<rt>き</rt></ruby>ません"],
+    ["ました形","<ruby>来<rt>き</rt></ruby>ました"],
+    ["ませんでした形","<ruby>来<rt>き</rt></ruby>ませんでした"],
+    ["辞書形","<ruby>来<rt>く</rt></ruby>る"],
+    ["ない形","<ruby>来<rt>こ</rt></ruby>ない"],
+    ["た形","<ruby>来<rt>き</rt></ruby>た"],
+    ["なかった形","<ruby>来<rt>こ</rt></ruby>なかった"],
+  ]
+};
+const suru = {
+  head:"する", mean:"做（沒有漢字可標，整組平假名背）",
+  rows:[
+    ["ます形","します"],["ません形","しません"],["ました形","しました"],
+    ["ませんでした形","しませんでした"],["辞書形","する"],["ない形","しない"],
+    ["た形","した"],["なかった形","しなかった"],
+  ]
+};
+function irregularCard(v){
+  const rows = v.rows.map(([l,f])=>`<tr><td class="label">${l}</td><td>${f}</td></tr>`).join("");
+  return `<div class="verb-card">
+    <div class="head"><span class="kanji">${v.head}</span><span class="mean">${v.mean}</span></div>
+    <table>${rows}</table>
+  </div>`;
+}
+
+function buildVerbPanel(){
+  const godan = verbs.filter(v=>v.group==="godan");
+  const ichidan = verbs.filter(v=>v.group==="ichidan");
+  let html = "";
+  html += `<div class="group-heading godan"><h2>${groupMeta.godan.title}</h2><span class="tag">${groupMeta.godan.note}</span></div>`;
+  html += `<div class="verb-grid">${godan.map(verbCard).join("")}</div>`;
+  html += `<div class="group-heading ichidan"><h2>${groupMeta.ichidan.title}</h2><span class="tag">${groupMeta.ichidan.note}</span></div>`;
+  html += `<div class="verb-grid">${ichidan.map(verbCard).join("")}</div>`;
+  html += `<div class="group-heading irregular"><h2>${groupMeta.irregular.title}</h2><span class="tag">${groupMeta.irregular.note}</span></div>`;
+  html += `<div class="verb-grid">${irregularCard(suru)}${irregularCard(kuru)}</div>`;
+  document.getElementById("panel-verbs").innerHTML = html;
+}
+buildVerbPanel();
+
+// ---------------- 測驗 ----------------
+const questionBank = [
+  {q:"わたしは　まいあさ　コーヒーを　＿＿＿。（喝）",opts:["のみます","のみません","のんだ","のみたい"],a:0,exp:"習慣性動作用現在肯定形「〜ます」，這裡是「毎朝コーヒーを飲みます」＝每天早上喝咖啡。"},
+  {q:"きのう　なにも　＿＿＿でした。（不吃）",opts:["たべます","たべません","たべました","たべなかった"],a:1,exp:"過去否定禮貌形是「〜ませんでした」，這裡把でした留在句尾了，所以空格要填「たべません」，合起來＝「食べませんでした」。「たべなかった」是常體過去否定，跟後面的敬體「でした」文體不一致，不能混用。"},
+  {q:"すみません、まど（窓）を　あけて＿＿＿。",opts:["います","ください","もいいですか","くださいませんでした"],a:1,exp:"「〜てください」＝請〜，是禮貌的請求句型，句尾不需要か。「窓を開けてください」＝請打開窗戶。"},
+  {q:"ここで　しゃしんを　とっても＿＿＿。（可以拍照嗎）",opts:["いい","いいです","いいですか","たいです"],a:2,exp:"「〜てもいいですか」＝可以〜嗎，用來詢問許可。「とってもいいですか」＝可以拍嗎？句尾的か就在正解裡，不用另外加。"},
+  {q:"としょかんの　なかで　＿＿＿ください。（不要說話）",opts:["はなして","はなさないで","はなさなくて","はなした"],a:1,exp:"「〜ないでください」＝請不要〜，禁止句型。「話さないでください」＝請不要說話。"},
+  {q:"わたし＿＿＿　にほんごの　せんせいです。",opts:["を","に","は","で"],a:2,exp:"「は」是主題助詞，標示句子的主題。「私は日本語の先生です」＝我是日文老師。"},
+  {q:"あした　ともだち＿＿＿　あいます。",opts:["を","に","へ","が"],a:1,exp:"「〜に会います」固定搭配「に」，表示會面的對象。「友達に会います」＝跟朋友見面。"},
+  {q:"まいにち　９じ＿＿＿　５じ＿＿＿　はたらきます。",opts:["から／まで","まで／から","に／で","を／に"],a:0,exp:"「から〜まで」＝從〜到〜，表示時間或範圍的起訖。「9時から5時まで」＝從9點到5點。"},
+  {q:"＿＿＿は　わたしの　かばんです。（那個離我們兩人都遠的包包）",opts:["これ","それ","あの","あれ"],a:3,exp:"「これ／それ／あれ」是可以單獨當主詞的代名詞，依距離分別是「近我」「近你」「兩人都遠」，這裡是遠處的東西，故選「あれ」。「あの」是連體詞，後面一定要接名詞（如あの　かばん），不能單獨當主詞，所以不合。"},
+  {q:"としょかん＿＿＿　ほんを　よみます。",opts:["に","へ","で","を"],a:2,exp:"「で」表示動作發生的場所。「図書館で本を読みます」＝在圖書館看書。"},
+  {q:"この　りんごは　とても＿＿＿です。",opts:["きれいな","しずかな","あまい","げんきな"],a:2,exp:"い形容詞「甘い」（甜的）可直接＋です；其餘選項是な形容詞語幹，需要「〜な」才能修飾名詞，此處單獨當謂語要用「〜だ／です」而非「〜な」，故不合。"},
+  {q:"あの　こうえんは　あまり＿＿＿ないです。（不安靜）",opts:["しずかで","しずか","しずかに","しずかだ"],a:0,exp:"な形容詞的否定標準說法是「〜では（じゃ）ないです」，「しずかでないです」是省略は的書面／口語簡化形，一樣通用。空格要接「で」才能跟後面的「ないです」組成完整否定，單獨「しずか」＋ないです（しずかないです）文法不通。"},
+  {q:"きょう　しごとが　＿＿＿ので、はやく　かえります。",opts:["おわる","おわります","おわって","おわった"],a:0,exp:"「〜ので」（因為）前面的動詞一定要用常體（辞書形/た形/ない形/なかった形），不能接ます形。這句是現在要發生的事，所以用辞書形「終わる」。順帶一提：如果是「〜から」，おわる、おわります兩種都可以接，那題就沒有唯一正解，所以這裡特地換成規則更嚴格的「ので」來測試。"},
+  {q:"にほんへ　いった　こと＿＿＿　ありますか。（有沒有去過日本）",opts:["は","を","が","に"],a:2,exp:"「〜たことがあります」＝曾經〜過，固定搭配「が」。「日本へ行ったことがありますか」＝你去過日本嗎？"},
+  {q:"つかれました。すこし　＿＿＿たいです。（想休息）",opts:["やすみ","やすんで","やすむ","やすまない"],a:0,exp:"「〜たいです」表示想要做某動作，前面接動詞ます形去掉ます。「休みたいです」＝想休息。"},
+];
+
+let order = [];
+let current = 0;
+let score = 0;
+
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function startQuiz(){
+  order = shuffle(questionBank.map((_,i)=>i));
+  current = 0;
+  score = 0;
+  renderQuestion();
+}
+
+function renderQuestion(){
+  const card = document.getElementById("quiz-card");
+  if(current >= order.length){
+    renderResult();
+    return;
+  }
+  const q = questionBank[order[current]];
+  document.getElementById("q-counter").textContent = `第 ${current+1} / ${order.length} 題`;
+  document.getElementById("q-score").textContent = `目前分數：${score}`;
+  document.getElementById("progress-fill").style.width = `${(current/order.length)*100}%`;
+
+  const optsHtml = q.opts.map((o,i)=>`<button class="opt" data-i="${i}">${o}</button>`).join("");
+  card.innerHTML = `
+    <p class="q-text">${q.q}</p>
+    <div class="options">${optsHtml}</div>
+    <div class="explain" id="explain"></div>
+    <div class="quiz-actions"><button class="btn" id="next-btn" disabled>下一題</button></div>
+  `;
+
+  card.querySelectorAll(".opt").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const i = Number(btn.dataset.i);
+      card.querySelectorAll(".opt").forEach(b=>b.disabled=true);
+      if(i === q.a){
+        btn.classList.add("correct");
+        score++;
+      } else {
+        btn.classList.add("wrong");
+        card.querySelector(`.opt[data-i="${q.a}"]`).classList.add("correct");
+      }
+      const exp = document.getElementById("explain");
+      exp.innerHTML = `<b>${i===q.a? "答對了！" : "答錯囉，正解如上。"}</b><br>${q.exp}`;
+      exp.classList.add("show");
+      document.getElementById("q-score").textContent = `目前分數：${score}`;
+      document.getElementById("next-btn").disabled = false;
+    });
+  });
+
+  document.getElementById("next-btn").addEventListener("click", ()=>{
+    current++;
+    renderQuestion();
+  });
+}
+
+function renderResult(){
+  document.getElementById("progress-fill").style.width = "100%";
+  document.getElementById("q-counter").textContent = "測驗完成";
+  const pct = Math.round((score/order.length)*100);
+  let comment = "";
+  if(pct >= 85) comment = "非常穩，這批題型你已經抓到手感了，可以往 N4 銜接文法前進！";
+  else if(pct >= 60) comment = "基礎不錯，錯的地方回去看一下解說，再練一輪會更穩。";
+  else comment = "沒關係，把上面的解說再看一次，錯的題型通常會重複出現，抓出來就好辦了。";
+
+  document.getElementById("quiz-card").innerHTML = `
+    <div class="result">
+      <div class="score">${score} / ${order.length}</div>
+      <p>${comment}</p>
+      <button class="btn" id="retry-btn">再挑戰一次</button>
+    </div>
+  `;
+  document.getElementById("retry-btn").addEventListener("click", startQuiz);
+}
+
+// ---------------- 聽力 ----------------
+const listenBank = [
+  {audio:"わたしは まいあさ コーヒーを のみます。",
+   q:"わたしは まいあさ なにを のみますか。",
+   opts:["おちゃ","コーヒー","みず","ぎゅうにゅう"],a:1,
+   transcript:"私は毎朝コーヒーを飲みます。（我每天早上喝咖啡。）"},
+  {audio:"きのう としょかんで ほんを よみました。",
+   q:"きのう どこで ほんを よみましたか。",
+   opts:["がっこう","うち","としょかん","かいしゃ"],a:2,
+   transcript:"昨日図書館で本を読みました。（昨天在圖書館看書。）"},
+  {audio:"すみません、まどを あけてください。",
+   q:"なにを あけてくださいと いいましたか。",
+   opts:["ドア","まど","はこ","かばん"],a:1,
+   transcript:"すみません、窓を開けてください。（不好意思，請打開窗戶。）"},
+  {audio:"わたしは にほんへ いった ことが あります。",
+   q:"わたしは どこへ いった ことが ありますか。",
+   opts:["かんこく","にほん","たいわん","ちゅうごく"],a:1,
+   transcript:"私は日本へ行ったことがあります。（我去過日本。）"},
+  {audio:"きょうは しごとが おわってから、うちへ かえります。",
+   q:"しごとが おわったら、どこへ かえりますか。",
+   opts:["がっこう","レストラン","うち","こうえん"],a:2,
+   transcript:"今日は仕事が終わってから、家へ帰ります。（今天工作結束後就回家。）"},
+  {audio:"わたしは まいばん ９じに ねます。",
+   q:"わたしは いつ ねますか。",
+   opts:["あさ７じ","ひる１２じ","よる９じ","よる１１じ"],a:2,
+   transcript:"私は毎晩9時に寝ます。（我每天晚上9點睡覺。）"},
+  {audio:"つかれましたから、すこし やすみたいです。",
+   q:"どうして やすみたいですか。",
+   opts:["ねむいから","つかれたから","あついから","いそがしいから"],a:1,
+   transcript:"疲れましたから、少し休みたいです。（因為累了，想休息一下。）"},
+  {audio:"としょかんの なかで はなさないでください。",
+   q:"としょかんの なかで なにを しては いけませんか。",
+   opts:["よむこと","はなすこと","かくこと","まつこと"],a:1,
+   transcript:"図書館の中で話さないでください。（請不要在圖書館裡說話。）"},
+];
+
+let lOrder = [];
+let lCurrent = 0;
+let lScore = 0;
+let jaVoice = null;
+
+function pickJaVoice(){
+  const voices = speechSynthesis.getVoices();
+  jaVoice = voices.find(v=>v.lang && v.lang.toLowerCase().startsWith("ja")) || null;
+  document.getElementById("no-voice").classList.toggle("show", !jaVoice && voices.length>0);
+}
+if("speechSynthesis" in window){
+  pickJaVoice();
+  speechSynthesis.onvoiceschanged = pickJaVoice;
+} else {
+  document.getElementById("no-voice").classList.add("show");
+}
+
+function speakJa(text){
+  if(!("speechSynthesis" in window)) return;
+  speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = "ja-JP";
+  utter.rate = 0.85;
+  if(jaVoice) utter.voice = jaVoice;
+  speechSynthesis.speak(utter);
+}
+
+function startListen(){
+  lOrder = shuffle(listenBank.map((_,i)=>i));
+  lCurrent = 0;
+  lScore = 0;
+  renderListenQ();
+}
+
+function renderListenQ(){
+  const card = document.getElementById("listen-card");
+  if(lCurrent >= lOrder.length){
+    renderListenResult();
+    return;
+  }
+  const item = listenBank[lOrder[lCurrent]];
+  document.getElementById("l-counter").textContent = `第 ${lCurrent+1} / ${lOrder.length} 題`;
+  document.getElementById("l-score").textContent = `目前分數：${lScore}`;
+  document.getElementById("l-progress-fill").style.width = `${(lCurrent/lOrder.length)*100}%`;
+
+  const optsHtml = item.opts.map((o,i)=>`<button class="opt" data-i="${i}">${o}</button>`).join("");
+  card.innerHTML = `
+    <button class="play-btn" id="play-btn">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+      播放音檔
+    </button>
+    <p class="listen-hint">可以重複播放，聽清楚後再作答</p>
+    <p class="q-text">${item.q}</p>
+    <div class="options">${optsHtml}</div>
+    <div class="transcript" id="l-transcript"></div>
+    <div class="quiz-actions"><button class="btn" id="l-next-btn" disabled>下一題</button></div>
+  `;
+
+  document.getElementById("play-btn").addEventListener("click", ()=> speakJa(item.audio));
+
+  card.querySelectorAll(".opt").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const i = Number(btn.dataset.i);
+      card.querySelectorAll(".opt").forEach(b=>b.disabled=true);
+      if(i === item.a){
+        btn.classList.add("correct");
+        lScore++;
+      } else {
+        btn.classList.add("wrong");
+        card.querySelector(`.opt[data-i="${item.a}"]`).classList.add("correct");
+      }
+      const t = document.getElementById("l-transcript");
+      t.innerHTML = `<b>${i===item.a? "答對了！" : "答錯囉，正解如上。"}</b><br>逐字稿：${item.transcript}`;
+      t.classList.add("show");
+      document.getElementById("l-score").textContent = `目前分數：${lScore}`;
+      document.getElementById("l-next-btn").disabled = false;
+    });
+  });
+
+  document.getElementById("l-next-btn").addEventListener("click", ()=>{
+    lCurrent++;
+    renderListenQ();
+  });
+}
+
+function renderListenResult(){
+  document.getElementById("l-progress-fill").style.width = "100%";
+  document.getElementById("l-counter").textContent = "聽力練習完成";
+  const pct = Math.round((lScore/lOrder.length)*100);
+  let comment = "";
+  if(pct >= 85) comment = "聽力很穩了，可以試著不看逐字稿、只靠耳朵抓關鍵詞。";
+  else if(pct >= 60) comment = "抓得到大意，把逐字稿再念一次、對照聽力內容，加強細節詞彙。";
+  else comment = "沒關係，先熟悉這些句型的發音節奏，多播放幾次再作答會進步很快。";
+
+  document.getElementById("listen-card").innerHTML = `
+    <div class="result">
+      <div class="score">${lScore} / ${lOrder.length}</div>
+      <p>${comment}</p>
+      <button class="btn" id="l-retry-btn">再挑戰一次</button>
+    </div>
+  `;
+  document.getElementById("l-retry-btn").addEventListener("click", startListen);
+}
+
+// ---------------- Tabs ----------------
+document.querySelectorAll("nav.tabs button").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    document.querySelectorAll("nav.tabs button").forEach(b=>b.classList.remove("active"));
+    document.querySelectorAll("section.panel").forEach(p=>p.classList.remove("active"));
+    btn.classList.add("active");
+    document.getElementById(`panel-${btn.dataset.panel}`).classList.add("active");
+  });
+});
+
+startQuiz();
+startListen();
+</script>
