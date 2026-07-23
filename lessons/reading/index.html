@@ -40,7 +40,7 @@ passages.forEach(p => {
     const a = document.createElement("a");
     a.className = "card-link";
     a.href = `passage-${String(p.n).padStart(2,"0")}.html`;
-    a.innerHTML = `<div class="title">第${p.n}篇｜${p.title}</div><div class="desc">${p.desc}</div><span class="badge done">已完成</span>`;
+    a.innerHTML = `<div class="title">第${p.n}篇｜${p.title}</div><div class="desc">${p.desc}</div><span class="badge done">開放中</span>`;
     grid.appendChild(a);
   } else {
     const d = document.createElement("div");
