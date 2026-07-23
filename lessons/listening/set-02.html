@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>N5聽力｜練習組2 ポイント理解</title>
+<link rel="stylesheet" href="../../assets/site.css">
+<style>
+  .quiz-card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:26px 24px;margin-bottom:20px;}
+  .point-q{background:var(--sakura-soft);border-radius:12px;padding:12px 16px;margin-bottom:14px;font-size:15.5px;font-weight:700;}
+  .point-q .label{font-size:11.5px;font-weight:700;color:var(--sakura);display:block;margin-bottom:4px;}
+  .dialogue{background:var(--indigo-soft);border-radius:12px;padding:14px 16px;margin-bottom:16px;font-size:14px;display:none;}
+  .dialogue.show{display:block;}
+  .dialogue .line{margin:3px 0;}
+  .dialogue .speaker{font-weight:700;color:var(--indigo);}
+  .options{display:grid;gap:8px;}
+  .opt{text-align:left;font:inherit;font-size:15px;padding:11px 14px;border-radius:10px;border:2px solid var(--line);background:var(--paper);cursor:pointer;}
+  .opt:hover:not(:disabled){border-color:var(--indigo);}
+  .opt.correct{border-color:var(--matcha);background:var(--matcha-soft);font-weight:700;}
+  .opt.wrong{border-color:var(--wrong);background:var(--wrong-soft);}
+  .opt:disabled{cursor:default;}
+  .explain{margin-top:14px;padding:12px 16px;border-radius:10px;background:var(--matcha-soft);font-size:14px;display:none;}
+  .explain.show{display:block;}
+  .result-banner{text-align:center;padding:20px;background:var(--sakura-soft);border-radius:16px;margin-bottom:20px;display:none;}
+  .result-banner.show{display:block;}
+  .result-banner .score{font-size:32px;font-weight:800;color:var(--sakura);}
+  .hint{font-size:13px;color:var(--ink-soft);margin-bottom:24px;}
+  .reveal-btn{margin-bottom:14px;}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <a class="back" href="index.html">← 回聽力題型列表</a>
+  <h1>練習組2｜<span class="accent">ポイント理解</span></h1>
+  <p>先看題目、知道要聽的重點，再播放對話——這才是這個題型真正的訓練方式。</p>
+</header>
+
+<main>
+  <p class="hint">流程：先讀題目 → 帶著問題播放對話 → 選答案。不要先看對話內容。</p>
+  <div class="result-banner" id="result-banner"><span class="score" id="result-score"></span><div>分（滿分6分）</div></div>
+  <div id="quiz-area"></div>
+</main>
+
+<footer>阿凱日文教室・N5 聽力練習</footer>
+
+<script src="../../assets/speak.js"></script>
+<script>
+const items = [
+  {
+    point: "女の人は、どうして今日学校に遅れましたか。",
+    dialogue: [
+      {s:"男", t:"どうしたんですか。遅かったですね。"},
+      {s:"女", t:"すみません。朝、電車が止まっていて、バスで来ました。バスはとても混んでいました。"},
+    ],
+    opts:["電車が止まっていたから","バスが遅れたから","寝坊したから","道が分からなかったから"],
+    a:0,
+    exp:"「朝、電車が止まっていて」と言っているので、遅れた理由は電車が止まっていたことです。"
+  },
+  {
+    point: "男の人は、スポーツの中で何が一番好きですか。",
+    dialogue: [
+      {s:"女", t:"スポーツの中で何が好きですか。サッカーですか。"},
+      {s:"男", t:"サッカーもいいですが、私は水泳が一番好きです。毎週プールに行きます。"},
+    ],
+    opts:["サッカー","水泳","野球","テニス"],
+    a:1,
+    exp:"「私は水泳が一番好きです」と言っています。"
+  },
+  {
+    point: "二人は明日、何時に会いますか。",
+    dialogue: [
+      {s:"男", t:"明日、映画に行きませんか。"},
+      {s:"女", t:"いいですね。何時がいいですか。"},
+      {s:"男", t:"2時はどうですか。"},
+      {s:"女", t:"2時はちょっと…3時からはどうですか。"},
+      {s:"男", t:"いいですよ、3時にしましょう。"},
+    ],
+    opts:["2時","2時半","3時","4時"],
+    a:2,
+    exp:"最初は2時と言いましたが、女の人が3時がいいと言い、男の人も「3時にしましょう」と言ったので、3時に決まりました。"
+  },
+  {
+    point: "女の人はどうして疲れていますか。",
+    dialogue: [
+      {s:"男", t:"顔色が悪いですね。大丈夫ですか。"},
+      {s:"女", t:"昨日の夜、あまり寝ていないんです。宿題がたくさんあって、3時まで起きていました。"},
+    ],
+    opts:["仕事が忙しいから","宿題が多くて夜遅くまで起きていたから","病気だから","運動しすぎたから"],
+    a:1,
+    exp:"「宿題がたくさんあって、3時まで起きていました」と言っているので、理由は宿題です。"
+  },
+  {
+    point: "このレストランで一番人気があるのは何ですか。",
+    dialogue: [
+      {s:"女", t:"このレストラン、何がおいしいですか。"},
+      {s:"男", t:"魚料理もいいですが、一番人気があるのは肉料理です。"},
+      {s:"女", t:"じゃあ、肉料理を頼みましょう。"},
+    ],
+    opts:["魚料理","肉料理","野菜料理","デザート"],
+    a:1,
+    exp:"「一番人気があるのは肉料理です」と言っています。"
+  },
+  {
+    point: "男の人はなぜ会議に来られませんか。",
+    dialogue: [
+      {s:"女", t:"田中さん、今日の会議に来ますか。"},
+      {s:"男", t:"すみません、今日は体の具合が悪くて、会議に来られません。"},
+      {s:"女", t:"わかりました。お大事に。"},
+    ],
+    opts:["仕事が忙しいから","具合が悪いから","電車が止まっているから","会議室が分からないから"],
+    a:1,
+    exp:"「体の具合が悪くて、会議に来られません」と言っています。理由は体調不良です。"
+  },
+];
+
+let score = 0, answered = 0;
+const quizArea = document.getElementById("quiz-area");
+
+items.forEach((item, qi) => {
+  const card = document.createElement("div");
+  card.className = "quiz-card";
+  const dialogueHtml = item.dialogue.map(d => `<div class="line"><span class="speaker">${d.s}：</span>${d.t}</div>`).join("");
+  const optsHtml = item.opts.map((o,i)=>`<button class="opt" data-i="${i}" disabled>${o}</button>`).join("");
+  card.innerHTML = `
+    <div class="point-q"><span class="label">問題 ${qi+1}｜先讀這句再聽</span>${item.point}</div>
+    <button class="play-btn reveal-btn">🔊 播放對話</button>
+    <div class="dialogue">${dialogueHtml}</div>
+    <div class="options">${optsHtml}</div>
+    <div class="explain"></div>
+  `;
+  const dialogueEl = card.querySelector(".dialogue");
+  card.querySelector(".reveal-btn").addEventListener("click", () => {
+    dialogueEl.classList.add("show");
+    card.querySelectorAll(".opt").forEach(b=>b.disabled=false);
+    const fullText = item.dialogue.map(d => d.t).join("。");
+    speakJa(fullText);
+  });
+  card.querySelectorAll(".opt").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const i = Number(btn.dataset.i);
+      card.querySelectorAll(".opt").forEach(b=>b.disabled=true);
+      if(i===item.a){btn.classList.add("correct");score++;}
+      else{btn.classList.add("wrong");card.querySelector(`.opt[data-i="${item.a}"]`).classList.add("correct");}
+      const exp = card.querySelector(".explain");
+      exp.innerHTML = `<b>${i===item.a?"答對了！":"答錯囉，正解如上。"}</b><br>${item.exp}`;
+      exp.classList.add("show");
+      answered++;
+      if(answered === items.length){
+        document.getElementById("result-score").textContent = score;
+        document.getElementById("result-banner").classList.add("show");
+      }
+    });
+  });
+  quizArea.appendChild(card);
+});
+</script>
+</body>
+</html>
