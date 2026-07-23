@@ -59,11 +59,23 @@ fetch(`../../assets/vocab/unit-${unitId}.json`)
   .then(data => {
     document.title = `第${data.unit}單元｜${data.title}`;
     document.getElementById("page-title").innerHTML = `第${data.unit}單元 <span class="accent">${data.title}</span>`;
-    document.getElementById("page-sub").textContent = `共 ${data.words.length} 個單字，點喇叭可以聽發音`;
+    const halfCount = Math.ceil(data.words.length / 2);
+    document.getElementById("page-sub").textContent = `共 ${data.words.length} 個單字，分成前${halfCount}個／後${data.words.length - halfCount}個兩段，點喇叭可以聽發音`;
 
     const list = document.getElementById("word-list");
     list.innerHTML = "";
-    data.words.forEach(w => {
+    const numerals = ["一","二","三","四","五","六","七","八","九","十","十一","十二","十三","十四","十五","十六","十七","十八","十九","二十","二十一","二十二","二十三","二十四","二十五"];
+    const numLabel = i => (i < numerals.length ? `第${numerals[i]}個` : `第${i+1}個`);
+    const half = Math.ceil(data.words.length / 2);
+
+    data.words.forEach((w, i) => {
+      if(i === half){
+        const divider = document.createElement("div");
+        divider.className = "half-divider";
+        divider.textContent = `後半開始（${numLabel(half)}〜${numLabel(data.words.length-1)}）`;
+        list.appendChild(divider);
+      }
+
       const headword = w.reading ? `<ruby>${w.kanji}<rt>${w.reading}</rt></ruby>` : w.kanji;
       const wordSpeech = w.reading || w.kanji;
       const sentenceHtml = renderFurigana(w.sentence);
@@ -72,6 +84,7 @@ fetch(`../../assets/vocab/unit-${unitId}.json`)
       const card = document.createElement("div");
       card.className = "word-card";
       card.innerHTML = `
+        <span class="word-number">${numLabel(i)}</span>
         <div class="word-head">
           <span class="kanji">${headword}</span>
           <button class="play-btn small word-play">🔊 單字</button>
