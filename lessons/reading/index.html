@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>N5 閱讀｜10篇文章</title>
+<link rel="stylesheet" href="../../assets/site.css">
+</head>
+<body>
+
+<header class="top">
+  <a class="back" href="../../index.html">← 回課綱首頁</a>
+  <h1>N5 閱讀 <span class="accent">10 篇文章</span></h1>
+  <p>每篇附逐句朗讀、理解測驗、文法與假名解說</p>
+</header>
+
+<main>
+  <div class="grid" id="passage-grid"></div>
+</main>
+
+<footer>阿凱日文教室・N5 閱讀練習，陸續更新中</footer>
+
+<script>
+const passages = [
+  {n:1, title:"あきこさんの一日", desc:"自我介紹＋日常作息，最基礎的N5文章", done:true},
+  {n:2, title:"週末の予定", desc:"週末計畫，練習つもりです／ましょう", done:false},
+  {n:3, title:"わたしの部屋", desc:"描述房間物品位置，練習に／があります", done:false},
+  {n:4, title:"レストランで", desc:"餐廳點餐對話，練習ください／お願いします", done:false},
+  {n:5, title:"買い物", desc:"購物情境，練習より／price表現", done:false},
+  {n:6, title:"旅行の話", desc:"旅行經驗分享，練習たことがあります", done:false},
+  {n:7, title:"天気と季節", desc:"天氣與四季描述，練習形容詞句", done:false},
+  {n:8, title:"友達に手紙", desc:"書信體，練習禮貌體＋てください", done:false},
+  {n:9, title:"病院で", desc:"看病情境對話，練習てはいけません", done:false},
+  {n:10, title:"わたしの一週間", desc:"一週作息總複習，綜合所有N5文法", done:false},
+];
+
+const grid = document.getElementById("passage-grid");
+passages.forEach(p => {
+  if(p.done){
+    const a = document.createElement("a");
+    a.className = "card-link";
+    a.href = `passage-${String(p.n).padStart(2,"0")}.html`;
+    a.innerHTML = `<div class="title">第${p.n}篇｜${p.title}</div><div class="desc">${p.desc}</div><span class="badge done">已完成</span>`;
+    grid.appendChild(a);
+  } else {
+    const d = document.createElement("div");
+    d.className = "placeholder";
+    d.textContent = `第${p.n}篇｜${p.title} — 準備中`;
+    grid.appendChild(d);
+  }
+});
+</script>
+</body>
+</html>

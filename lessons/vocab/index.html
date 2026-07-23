@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>N5 單字庫｜20個單元</title>
+<link rel="stylesheet" href="../../assets/site.css">
+</head>
+<body>
+
+<header class="top">
+  <a class="back" href="../../index.html">← 回課綱首頁</a>
+  <h1>N5 單字庫 <span class="accent">20 個單元</span></h1>
+  <p>每單元約45個字，共約900字，每個字都有例句、平假名注音、可以點擊聽發音</p>
+</header>
+
+<main>
+  <div class="grid" id="unit-grid"></div>
+</main>
+
+<footer>阿凱日文教室・N5 單字庫，陸續更新中</footer>
+
+<script>
+const units = [
+  {n:1, title:"人・家族・基本語彙", done:true},
+  {n:2, title:"日常動作・食べ物", done:false},
+  {n:3, title:"家の中・生活用品", done:false},
+  {n:4, title:"街・場所・交通", done:false},
+  {n:5, title:"時間・曜日・季節", done:false},
+  {n:6, title:"体・健康", done:false},
+  {n:7, title:"買い物・お金", done:false},
+  {n:8, title:"仕事・学校生活", done:false},
+  {n:9, title:"趣味・娯楽", done:false},
+  {n:10, title:"天気・自然", done:false},
+  {n:11, title:"形容詞①（い形容詞）", done:false},
+  {n:12, title:"形容詞②（な形容詞）", done:false},
+  {n:13, title:"動作動詞まとめ", done:false},
+  {n:14, title:"感情・状態", done:false},
+  {n:15, title:"旅行・乗り物", done:false},
+  {n:16, title:"数字・量詞", done:false},
+  {n:17, title:"色・形・位置", done:false},
+  {n:18, title:"あいさつ・会話表現", done:false},
+  {n:19, title:"カタカナ語彙", done:false},
+  {n:20, title:"総復習・よく出る語彙", done:false},
+];
+
+const grid = document.getElementById("unit-grid");
+units.forEach(u => {
+  if(u.done){
+    const a = document.createElement("a");
+    a.className = "card-link";
+    a.href = `unit.html?u=${u.n}`;
+    a.innerHTML = `<div class="title">第${u.n}單元｜${u.title}</div><div class="desc">約45個常用單字＋例句</div><span class="badge done">已完成</span>`;
+    grid.appendChild(a);
+  } else {
+    const d = document.createElement("div");
+    d.className = "placeholder";
+    d.textContent = `第${u.n}單元｜${u.title} — 準備中`;
+    grid.appendChild(d);
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>N5 單字</title>
+<link rel="stylesheet" href="../../assets/site.css">
+<style>
+  .word-list{display:flex;flex-direction:column;gap:12px;}
+  .word-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 20px;}
+  .word-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+  .word-head .kanji{font-size:21px;font-weight:700;}
+  .word-head .meaning{font-size:14px;color:var(--ink-soft);margin-left:auto;}
+  .sentence-row{margin-top:10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  .sentence-row .jp{font-size:15.5px;}
+  .loading{color:var(--ink-soft);font-size:14px;text-align:center;padding:40px 0;}
+  .unit-nav{display:flex;justify-content:space-between;margin-top:30px;font-size:14px;}
+  .unit-nav a{text-decoration:none;}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <a class="back" href="index.html">← 回單字單元列表</a>
+  <h1 id="page-title">N5 <span class="accent">單字</span></h1>
+  <p id="page-sub">載入中…</p>
+</header>
+
+<main>
+  <div class="word-list" id="word-list"><div class="loading">載入單字中…</div></div>
+  <div class="unit-nav">
+    <a id="prev-link" href="#">← 上一單元</a>
+    <a href="index.html">回單元列表</a>
+    <a id="next-link" href="#">下一單元 →</a>
+  </div>
+</main>
+
+<footer>阿凱日文教室・N5 單字庫</footer>
+
+<script src="../../assets/speak.js"></script>
+<script>
+const params = new URLSearchParams(location.search);
+const unitNum = parseInt(params.get("u") || "1", 10);
+const unitId = String(unitNum).padStart(2, "0");
+
+document.getElementById("prev-link").href = `unit.html?u=${Math.max(1, unitNum-1)}`;
+document.getElementById("next-link").href = `unit.html?u=${unitNum+1}`;
+
+fetch(`../../assets/vocab/unit-${unitId}.json`)
+  .then(r => { if(!r.ok) throw new Error("not found"); return r.json(); })
+  .then(data => {
+    document.title = `第${data.unit}單元｜${data.title}`;
+    document.getElementById("page-title").innerHTML = `第${data.unit}單元 <span class="accent">${data.title}</span>`;
+    document.getElementById("page-sub").textContent = `共 ${data.words.length} 個單字，點喇叭可以聽發音`;
+
+    const list = document.getElementById("word-list");
+    list.innerHTML = "";
+    data.words.forEach(w => {
+      const headword = w.reading ? `<ruby>${w.kanji}<rt>${w.reading}</rt></ruby>` : w.kanji;
+      const wordSpeech = w.reading || w.kanji;
+      const sentenceHtml = renderFurigana(w.sentence);
+      const sentenceSpeech = stripFuriganaForSpeech(w.sentence);
+
+      const card = document.createElement("div");
+      card.className = "word-card";
+      card.innerHTML = `
+        <div class="word-head">
+          <span class="kanji">${headword}</span>
+          <button class="play-btn small word-play">🔊 單字</button>
+          <span class="meaning">${w.meaning}</span>
+        </div>
+        <div class="sentence-row">
+          <span class="jp">${sentenceHtml}</span>
+          <button class="play-btn small sentence-play">🔊 例句</button>
+        </div>
+      `;
+      card.querySelector(".word-play").addEventListener("click", () => speakJa(wordSpeech));
+      card.querySelector(".sentence-play").addEventListener("click", () => speakJa(sentenceSpeech));
+      list.appendChild(card);
+    });
+  })
+  .catch(() => {
+    document.getElementById("page-sub").textContent = "這個單元還在準備中";
+    document.getElementById("word-list").innerHTML = `<div class="loading">這個單元還沒做好，先回單元列表看已完成的內容。</div>`;
+  });
+</script>
+</body>
+</html>

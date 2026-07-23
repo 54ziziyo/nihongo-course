@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>N5閱讀 第1篇｜あきこさんの一日</title>
+<link rel="stylesheet" href="../../assets/site.css">
+<style>
+  .passage-card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:26px 24px;margin-bottom:30px;}
+  .passage-card p{margin:0 0 4px;}
+  .sent-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;}
+  .sent-row .jp{font-size:17px;line-height:1.9;}
+  .sent-row .play-btn{flex-shrink:0;margin-top:2px;}
+
+  .quiz-card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:26px 24px;margin-bottom:20px;}
+  .q-text{font-size:16.5px;font-weight:700;margin:0 0 16px;}
+  .options{display:grid;gap:8px;}
+  .opt{text-align:left;font:inherit;font-size:15px;padding:11px 14px;border-radius:10px;border:2px solid var(--line);background:var(--paper);cursor:pointer;}
+  .opt:hover:not(:disabled){border-color:var(--indigo);}
+  .opt.correct{border-color:var(--matcha);background:var(--matcha-soft);font-weight:700;}
+  .opt.wrong{border-color:var(--wrong);background:var(--wrong-soft);}
+  .opt:disabled{cursor:default;}
+  .explain{margin-top:14px;padding:12px 16px;border-radius:10px;background:var(--indigo-soft);font-size:14px;display:none;}
+  .explain.show{display:block;}
+
+  .result-banner{text-align:center;padding:20px;background:var(--sakura-soft);border-radius:16px;margin-bottom:30px;display:none;}
+  .result-banner.show{display:block;}
+  .result-banner .score{font-size:32px;font-weight:800;color:var(--sakura);}
+
+  .grammar-note{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 18px;margin-bottom:10px;}
+  .grammar-note .term{font-weight:700;font-size:15px;margin-bottom:4px;color:var(--indigo);}
+  .grammar-note .desc{font-size:13.5px;color:var(--ink-soft);}
+
+  .kana-note{background:var(--matcha-soft);border-radius:14px;padding:14px 18px;font-size:13.5px;margin-bottom:20px;}
+
+  section.block{margin:36px 0;}
+  section.block h2{font-size:19px;display:flex;align-items:center;gap:8px;}
+  section.block h2 .dot{width:9px;height:9px;border-radius:50%;background:var(--sakura);display:inline-block;}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <a class="back" href="index.html">← 回閱讀文章列表</a>
+  <h1>第1篇｜<span class="accent">あきこさんの一日</span></h1>
+  <p>N5程度短文，約150字，附逐句朗讀、理解測驗、文法與假名解說</p>
+</header>
+
+<main>
+
+  <section class="block">
+    <h2><span class="dot"></span>本文</h2>
+    <div class="passage-card" id="passage"></div>
+  </section>
+
+  <section class="block">
+    <h2><span class="dot"></span>理解問題</h2>
+    <div class="result-banner" id="result-banner"><span class="score" id="result-score"></span><div>分（滿分6分）</div></div>
+    <div id="quiz-area"></div>
+  </section>
+
+  <section class="block">
+    <h2><span class="dot"></span>文法解說</h2>
+    <div class="grammar-note"><div class="term">〜てから</div><div class="desc">做完〜之後（強調先後順序），前面接動詞て形。「食べてから」＝吃完之後。</div></div>
+    <div class="grammar-note"><div class="term">〜へ行きます</div><div class="desc">往〜方向去，へ表示移動方向，也可以換成に。</div></div>
+    <div class="grammar-note"><div class="term">〜と食べます</div><div class="desc">跟〜一起吃，と表示動作的共同對象。</div></div>
+    <div class="grammar-note"><div class="term">〜が終わった後で</div><div class="desc">〜結束之後，後で前面接動詞た形，跟〜てから語感很像，這裡強調「結束」這件事之後才做下一步。</div></div>
+    <div class="grammar-note"><div class="term">〜時に</div><div class="desc">在〜點（表示時間點），時間點後面固定接に。</div></div>
+  </section>
+
+  <section class="block">
+    <h2><span class="dot"></span>假名解說</h2>
+    <div class="kana-note">
+      這篇文章的漢字都是你已經學過的常用詞彙（学生、学校、図書館、友達等），平假名部分負責串連文法（です、から、へ、を、が終わった後で 等）。
+      沒有出現片假名，是因為這篇是最基礎的第1篇，日常生活的外來語（例如テレビ）我們有放一個練習你辨認——テレビ 是「television」音譯，片假名專門用來寫外來語、擬聲詞、強調語氣的詞。
+    </div>
+  </section>
+
+</main>
+
+<footer>阿凱日文教室・N5 閱讀練習</footer>
+
+<script src="../../assets/speak.js"></script>
+<script>
+const sentences = [
+  "私{わたし}は山田明子{やまだあきこ}です。学生{がくせい}です。",
+  "毎朝{まいあさ}7時{じ}に起{お}きます。",
+  "朝{あさ}ご飯{はん}を食{た}べてから、学校{がっこう}へ行{い}きます。",
+  "学校{がっこう}で日本語{にほんご}を勉強{べんきょう}します。",
+  "昼{ひる}ご飯{はん}は友達{ともだち}と食{た}べます。",
+  "学校{がっこう}が終{お}わった後{あと}で、図書館{としょかん}で本{ほん}を読{よ}みます。",
+  "夜{よる}7時{じ}に家{いえ}へ帰{かえ}ります。",
+  "晩{ばん}ご飯{はん}を食{た}べてから、テレビを見{み}ます。",
+  "11時{じ}に寝{ね}ます。",
+];
+
+const passageEl = document.getElementById("passage");
+sentences.forEach(s => {
+  const row = document.createElement("div");
+  row.className = "sent-row";
+  row.innerHTML = `<button class="play-btn small">🔊</button><p class="jp">${renderFurigana(s)}</p>`;
+  row.querySelector("button").addEventListener("click", () => speakJa(stripFuriganaForSpeech(s)));
+  passageEl.appendChild(row);
+});
+
+const questionBank = [
+  {q:"あきこさんは何ですか。",opts:["先生","学生","医者","会社員"],a:1,exp:"「学生です」と書いてあります。あきこさんは学生です。"},
+  {q:"あきこさんは何時に起きますか。",opts:["6時","7時","8時","9時"],a:1,exp:"「毎朝7時に起きます」＝每天早上7點起床。"},
+  {q:"朝ご飯を食べてから、どこへ行きますか。",opts:["図書館","会社","学校","銀行"],a:2,exp:"「食べてから、学校へ行きます」＝吃完後去學校。"},
+  {q:"昼ご飯は誰と食べますか。",opts:["家族","先生","一人で","友達"],a:3,exp:"「昼ご飯は友達と食べます」＝跟朋友一起吃午餐。"},
+  {q:"学校が終わった後で、何をしますか。",opts:["テレビを見ます","本を読みます","晩ご飯を食べます","寝ます"],a:1,exp:"「図書館で本を読みます」＝在圖書館看書。"},
+  {q:"あきこさんは何時に寝ますか。",opts:["10時","11時","12時","1時"],a:1,exp:"「11時に寝ます」＝晚上11點睡覺。"},
+];
+
+let score = 0, answered = 0;
+const quizArea = document.getElementById("quiz-area");
+questionBank.forEach((q, qi) => {
+  const card = document.createElement("div");
+  card.className = "quiz-card";
+  const optsHtml = q.opts.map((o,i)=>`<button class="opt" data-i="${i}">${o}</button>`).join("");
+  card.innerHTML = `<p class="q-text">${qi+1}. ${q.q}</p><div class="options">${optsHtml}</div><div class="explain"></div>`;
+  card.querySelectorAll(".opt").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const i = Number(btn.dataset.i);
+      card.querySelectorAll(".opt").forEach(b=>b.disabled=true);
+      if(i===q.a){btn.classList.add("correct");score++;}
+      else{btn.classList.add("wrong");card.querySelector(`.opt[data-i="${q.a}"]`).classList.add("correct");}
+      const exp = card.querySelector(".explain");
+      exp.innerHTML = `<b>${i===q.a?"答對了！":"答錯囉，正解如上。"}</b><br>${q.exp}`;
+      exp.classList.add("show");
+      answered++;
+      if(answered === questionBank.length){
+        document.getElementById("result-score").textContent = score;
+        document.getElementById("result-banner").classList.add("show");
+      }
+    });
+  });
+  quizArea.appendChild(card);
+});
+</script>
+</body>
+</html>
