@@ -50,6 +50,36 @@
   }
 
   footer{text-align:center;color:var(--ink-soft);font-size:12.5px;margin-top:60px;}
+
+  nav.tabs{display:flex;gap:10px;justify-content:center;margin:0 0 32px;}
+  nav.tabs button{
+    font:inherit;font-weight:700;font-size:15px;padding:11px 22px;border-radius:999px;
+    border:2px solid var(--line);background:var(--card);color:var(--ink-soft);cursor:pointer;
+  }
+  nav.tabs button.active{border-color:var(--sakura);background:var(--sakura);color:#fff;box-shadow:0 4px 14px rgba(255,111,145,.35);}
+  section.panel{display:none;}
+  section.panel.active{display:block;}
+
+  .quiz-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;font-size:14px;color:var(--ink-soft);}
+  .progress-bar{height:8px;border-radius:99px;background:var(--line);overflow:hidden;margin-bottom:26px;}
+  .progress-bar > div{height:100%;background:linear-gradient(90deg,var(--sakura),var(--indigo));transition:width .3s ease;}
+  .quiz-card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:28px 26px;}
+  .q-text{font-size:19px;font-weight:700;margin:0 0 20px;text-wrap:balance;}
+  .options{display:grid;gap:10px;}
+  .opt{text-align:left;font:inherit;font-size:16px;padding:13px 16px;border-radius:12px;border:2px solid var(--line);background:var(--paper);cursor:pointer;}
+  .opt:hover:not(:disabled){border-color:var(--indigo);}
+  .opt.correct{border-color:var(--matcha);background:var(--matcha-soft);font-weight:700;}
+  .opt.wrong{border-color:#e4572e;background:#fde6df;}
+  .opt:disabled{cursor:default;}
+  .explain{margin-top:18px;padding:16px 18px;border-radius:12px;background:var(--indigo-soft);font-size:14.5px;display:none;}
+  .explain.show{display:block;}
+  .explain b{color:var(--indigo);}
+  .quiz-actions{display:flex;justify-content:flex-end;margin-top:20px;}
+  .btn{font:inherit;font-weight:700;font-size:15px;cursor:pointer;padding:11px 24px;border-radius:999px;border:none;background:var(--sakura);color:#fff;}
+  .btn:disabled{background:var(--line);color:var(--ink-soft);cursor:not-allowed;}
+  .result{text-align:center;padding:20px 10px;}
+  .result .score{font-size:48px;font-weight:800;color:var(--sakura);margin:6px 0;}
+  .result p{color:var(--ink-soft);margin:4px 0 22px;}
 </style>
 
 <header class="top">
@@ -58,7 +88,12 @@
   <p>從動詞變化到句型、助詞、指示詞的完整範圍地圖</p>
 </header>
 
-<main>
+<nav class="tabs">
+  <button class="active" data-panel="map">文法地圖</button>
+  <button data-panel="quiz">小測驗</button>
+</nav>
+
+<section class="panel active" id="panel-map">
   <div class="group">
     <h2><span class="dot"></span>動詞基礎變化</h2>
     <p class="status done">已完成（0-3、0-4課，含<a href="fukushuu.html">動詞總表＋測驗</a>）</p>
@@ -130,6 +165,7 @@
 
   <div class="group">
     <h2><span class="dot"></span>其他基本句型</h2>
+    <p class="status done">名詞句／可能形／比較句 → <a href="meishiku-kanou-hikaku.html">已做成獨立練習頁</a></p>
     <div class="item-list">
       <div class="item"><div class="term">名詞句</div><div class="desc">〜は〜です／〜は〜ではありません</div></div>
       <div class="item"><div class="term">可能形</div><div class="desc">〜ことができます／動詞可能形</div><div class="ex">日本語が話せます。</div></div>
@@ -137,6 +173,79 @@
       <div class="item"><div class="term">数量詞＋助詞</div><div class="desc">〜つ、〜人、〜枚、〜台 等量詞＋を/に 用法</div></div>
     </div>
   </div>
-</main>
+</section>
+
+<section class="panel" id="panel-quiz">
+  <main style="padding:0;max-width:820px;margin:0 auto;">
+    <div class="quiz-top">
+      <span id="q-counter">第 1 / 12 題</span>
+      <span id="q-score">目前分數：0</span>
+    </div>
+    <div class="progress-bar"><div id="progress-fill" style="width:8.3%"></div></div>
+    <div class="quiz-card" id="quiz-card"></div>
+  </main>
+</section>
 
 <footer>阿凱日文教室・N5 範圍地圖，掃過一輪後跟阿凱說哪裡不熟，會針對性出加強題</footer>
+
+<script>
+const questionBank = [
+  {q:"としょかんの　なかで　たべては＿＿＿。（不可以吃東西）",opts:["いけません","いません","いいです","ください"],a:0,exp:"「〜てはいけません」＝不可以〜，禁止句型。「食べてはいけません」＝不可以吃。"},
+  {q:"いま、あめが＿＿＿。（正在下雨）",opts:["ふります","ふっています","ふりました","ふりたいです"],a:1,exp:"「〜ています」表示動作正在進行中。「雨が降っています」＝正在下雨。"},
+  {q:"わたしは　この　えいがかんを　＿＿＿。（我知道這間電影院）",opts:["しります","しっています","しりました","しらない"],a:1,exp:"知る是特殊動詞，用「知っています」表示「知道」的狀態，而不是「知ります」。這是ています的狀態用法。"},
+  {q:"いっしょに　えいがを　＿＿＿。（一起看電影吧）",opts:["みます","みましょう","みたいです","みてください"],a:1,exp:"「〜ましょう」＝一起〜吧，邀約句型。「一緒に映画を見ましょう」＝一起看電影吧。"},
+  {q:"ねる　＿＿＿、はを　みがきます。（睡覺之前刷牙）",opts:["まえに","あとで","ながら","のに"],a:0,exp:"「〜前に」＝〜之前，前面接動詞辞書形。「寝る前に歯を磨きます」＝睡前刷牙。"},
+  {q:"しごとが　おわった　＿＿＿、うちへ　かえります。（工作結束之後回家）",opts:["まえに","あとで","ながら","でしょう"],a:1,exp:"「〜後で」＝〜之後，前面接動詞た形。「終わった後で家へ帰ります」＝結束後回家。"},
+  {q:"おんがくを　きき　＿＿＿、べんきょうします。（一邊聽音樂一邊唸書）",opts:["ながら","まえに","あとで","たいです"],a:0,exp:"「〜ながら」＝一邊〜一邊〜，前面接動詞ます形去掉ます。「聞きながら」＝一邊聽。"},
+  {q:"あしたは　あめ＿＿＿。（明天大概會下雨）",opts:["でしょう","ましょう","たいです","つもりです"],a:0,exp:"「〜でしょう」＝大概〜吧，表示推測，語調通常會上揚。「雨でしょう」＝大概會下雨吧。"},
+  {q:"らいねん　にほんへ　いく　＿＿＿です。（打算明年去日本）",opts:["でしょう","つもり","ながら","はず"],a:1,exp:"「〜つもりです」＝打算〜，前面接動詞辞書形，表示自己的計畫。「行くつもりです」＝打算去。"},
+  {q:"さいふの　なかに　１００えん＿＿＿　ありません。（錢包裡只有100元）",opts:["は","が","しか","も"],a:2,exp:"「〜しか＋否定」＝只有〜，強調數量很少。「100円しかありません」＝只有100元。"},
+  {q:"りんご　＿＿＿　みかんを　かいました。（買了蘋果、橘子等，暗示還買了別的水果）",opts:["や","と","も","しか"],a:0,exp:"「や」列舉時暗示還有其他沒說完的東西；「と」列舉的話代表就這些、沒有其他了。這裡語意是「還有別的」，故選や。"},
+  {q:"わたしは　えいごが　できます。にほんご　＿＿＿　できます。（英文會，日文也會）",opts:["は","が","も","を"],a:2,exp:"「も」＝也，表示追加同樣狀態。前面已經肯定一件事，這句再加一個一樣的狀態，故用「も」。「日本語もできます」＝日文也會。"},
+];
+
+let order = [], current = 0, score = 0;
+function shuffle(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function startQuiz(){order=shuffle(questionBank.map((_,i)=>i));current=0;score=0;renderQuestion();}
+function renderQuestion(){
+  const card=document.getElementById("quiz-card");
+  if(current>=order.length){renderResult();return;}
+  const q=questionBank[order[current]];
+  document.getElementById("q-counter").textContent=`第 ${current+1} / ${order.length} 題`;
+  document.getElementById("q-score").textContent=`目前分數：${score}`;
+  document.getElementById("progress-fill").style.width=`${(current/order.length)*100}%`;
+  const optsHtml=q.opts.map((o,i)=>`<button class="opt" data-i="${i}">${o}</button>`).join("");
+  card.innerHTML=`<p class="q-text">${q.q}</p><div class="options">${optsHtml}</div><div class="explain" id="explain"></div><div class="quiz-actions"><button class="btn" id="next-btn" disabled>下一題</button></div>`;
+  card.querySelectorAll(".opt").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      const i=Number(btn.dataset.i);
+      card.querySelectorAll(".opt").forEach(b=>b.disabled=true);
+      if(i===q.a){btn.classList.add("correct");score++;}
+      else{btn.classList.add("wrong");card.querySelector(`.opt[data-i="${q.a}"]`).classList.add("correct");}
+      const exp=document.getElementById("explain");
+      exp.innerHTML=`<b>${i===q.a?"答對了！":"答錯囉，正解如上。"}</b><br>${q.exp}`;
+      exp.classList.add("show");
+      document.getElementById("q-score").textContent=`目前分數：${score}`;
+      document.getElementById("next-btn").disabled=false;
+    });
+  });
+  document.getElementById("next-btn").addEventListener("click",()=>{current++;renderQuestion();});
+}
+function renderResult(){
+  document.getElementById("progress-fill").style.width="100%";
+  document.getElementById("q-counter").textContent="測驗完成";
+  const pct=Math.round((score/order.length)*100);
+  let comment = pct>=85?"很穩，這批句型你已經抓到手感了。":pct>=60?"基礎不錯，錯的地方回去看解說再練一輪。":"沒關係，把解說再看一次，錯的題型通常會重複出現。";
+  document.getElementById("quiz-card").innerHTML=`<div class="result"><div class="score">${score} / ${order.length}</div><p>${comment}</p><button class="btn" id="retry-btn">再挑戰一次</button></div>`;
+  document.getElementById("retry-btn").addEventListener("click",startQuiz);
+}
+document.querySelectorAll("nav.tabs button").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    document.querySelectorAll("nav.tabs button").forEach(b=>b.classList.remove("active"));
+    document.querySelectorAll("section.panel").forEach(p=>p.classList.remove("active"));
+    btn.classList.add("active");
+    document.getElementById(`panel-${btn.dataset.panel}`).classList.add("active");
+  });
+});
+startQuiz();
+</script>

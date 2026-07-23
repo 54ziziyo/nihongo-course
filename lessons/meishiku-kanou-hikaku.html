@@ -1,0 +1,218 @@
+<title>名詞句・可能形・比較句</title>
+<style>
+  :root{
+    --paper:#fffdf9; --ink:#2b2a33; --ink-soft:#6b6875;
+    --sakura:#ff6f91; --sakura-soft:#ffe3ea;
+    --indigo:#33528e; --indigo-soft:#e7edf7;
+    --matcha:#3fa76b; --matcha-soft:#e3f5ea;
+    --plum:#a8558f; --line:#ece7de; --card:#ffffff;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:"Hiragino Kaku Gothic ProN","Yu Gothic","Noto Sans TC","Noto Sans JP",system-ui,sans-serif;
+    line-height:1.75; padding:0 0 80px;
+  }
+  ruby rt{font-size:0.55em;color:var(--ink-soft);font-weight:600;}
+  a{color:var(--indigo);}
+  header.top{
+    padding:44px 24px 30px; text-align:center;
+    background:radial-gradient(circle at 15% 20%, var(--sakura-soft) 0%, transparent 45%),
+               radial-gradient(circle at 85% 0%, var(--indigo-soft) 0%, transparent 40%);
+  }
+  header.top .back{display:block;font-size:13px;color:var(--ink-soft);margin-bottom:14px;text-decoration:none;}
+  header.top .back:hover{color:var(--indigo);}
+  header.top h1{margin:0 0 8px;font-size:clamp(24px,5vw,34px);text-wrap:balance;}
+  header.top h1 .accent{color:var(--sakura);}
+  header.top p{margin:0;color:var(--ink-soft);font-size:15px;}
+
+  nav.tabs{display:flex;gap:10px;justify-content:center;margin:32px 0;}
+  nav.tabs button{
+    font:inherit;font-weight:700;font-size:15px;padding:11px 22px;border-radius:999px;
+    border:2px solid var(--line);background:var(--card);color:var(--ink-soft);cursor:pointer;
+  }
+  nav.tabs button.active{border-color:var(--sakura);background:var(--sakura);color:#fff;box-shadow:0 4px 14px rgba(255,111,145,.35);}
+  section.panel{display:none;}
+  section.panel.active{display:block;}
+
+  main{max-width:820px;margin:0 auto;padding:0 20px;}
+
+  .group{margin:38px 0;}
+  .group:first-child{margin-top:0;}
+  .group h2{font-size:19px;margin:0 0 4px;display:flex;align-items:center;gap:8px;}
+  .group h2 .dot{width:9px;height:9px;border-radius:50%;background:var(--sakura);display:inline-block;}
+  .group .note{font-size:13.5px;color:var(--ink-soft);margin:0 0 14px;}
+
+  .item-list{display:flex;flex-direction:column;gap:10px;}
+  .item{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 18px;}
+  .item .term{font-weight:700;font-size:15.5px;margin-bottom:3px;}
+  .item .desc{font-size:14px;color:var(--ink-soft);}
+  .item .ex{margin-top:8px;font-size:14.5px;background:var(--sakura-soft);display:inline-block;padding:6px 12px;border-radius:8px;}
+
+  table.conj{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;font-size:14.5px;}
+  table.conj th{background:var(--indigo-soft);color:var(--indigo);padding:10px 12px;text-align:left;font-size:13px;}
+  table.conj td{padding:9px 12px;border-top:1px solid var(--line);}
+  table.conj tr:nth-child(even) td{background:#fffaf4;}
+
+  .quiz-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;font-size:14px;color:var(--ink-soft);}
+  .progress-bar{height:8px;border-radius:99px;background:var(--line);overflow:hidden;margin-bottom:26px;}
+  .progress-bar > div{height:100%;background:linear-gradient(90deg,var(--sakura),var(--indigo));transition:width .3s ease;}
+  .quiz-card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:28px 26px;}
+  .q-text{font-size:19px;font-weight:700;margin:0 0 20px;text-wrap:balance;}
+  .options{display:grid;gap:10px;}
+  .opt{text-align:left;font:inherit;font-size:16px;padding:13px 16px;border-radius:12px;border:2px solid var(--line);background:var(--paper);cursor:pointer;}
+  .opt:hover:not(:disabled){border-color:var(--indigo);}
+  .opt.correct{border-color:var(--matcha);background:var(--matcha-soft);font-weight:700;}
+  .opt.wrong{border-color:#e4572e;background:#fde6df;}
+  .opt:disabled{cursor:default;}
+  .explain{margin-top:18px;padding:16px 18px;border-radius:12px;background:var(--indigo-soft);font-size:14.5px;display:none;}
+  .explain.show{display:block;}
+  .explain b{color:var(--indigo);}
+  .quiz-actions{display:flex;justify-content:flex-end;margin-top:20px;}
+  .btn{font:inherit;font-weight:700;font-size:15px;cursor:pointer;padding:11px 24px;border-radius:999px;border:none;background:var(--sakura);color:#fff;}
+  .btn:disabled{background:var(--line);color:var(--ink-soft);cursor:not-allowed;}
+  .result{text-align:center;padding:20px 10px;}
+  .result .score{font-size:48px;font-weight:800;color:var(--sakura);margin:6px 0;}
+  .result p{color:var(--ink-soft);margin:4px 0 22px;}
+
+  footer{text-align:center;color:var(--ink-soft);font-size:12.5px;margin-top:60px;}
+</style>
+
+<header class="top">
+  <a class="back" href="../index.html">← 回課綱首頁</a>
+  <h1>名詞句・可能形・<span class="accent">比較句</span></h1>
+  <p>N5 文法地圖裡「其他基本句型」的細部練習</p>
+</header>
+
+<nav class="tabs">
+  <button class="active" data-panel="map">文法說明</button>
+  <button data-panel="quiz">小測驗</button>
+</nav>
+
+<section class="panel active" id="panel-map">
+<main style="padding:0;">
+
+  <div class="group">
+    <h2><span class="dot"></span>名詞句</h2>
+    <p class="note">用「です」系統表達「A是B」，敬體四種時態肯定/否定</p>
+    <div class="item-list">
+      <div class="item"><div class="term">現在肯定：Nです</div><div class="ex">私は学生です。（我是學生）</div></div>
+      <div class="item"><div class="term">現在否定：Nではありません（＝じゃないです）</div><div class="ex">医者ではありません。（不是醫生）</div></div>
+      <div class="item"><div class="term">過去肯定：Nでした</div><div class="ex">昨日は休みでした。（昨天是休假日）</div></div>
+      <div class="item"><div class="term">過去否定：Nではありませんでした</div><div class="ex">学生ではありませんでした。（以前不是學生）</div></div>
+    </div>
+  </div>
+
+  <div class="group">
+    <h2><span class="dot"></span>可能形</h2>
+    <p class="note">表示「會〜／能夠〜」，兩種句型：①動詞可能形直接變化　②動詞辞書形＋ことができます</p>
+    <div class="item-list">
+      <div class="item"><div class="term">句型①　動詞可能形＋（が）＋できます／〜れます／〜られます</div><div class="ex">日本語が話せます。（會說日文）</div></div>
+      <div class="item"><div class="term">句型②　動詞辞書形＋ことができます</div><div class="ex">日本語を話すことができます。（可以說日文，意思相同，較正式）</div></div>
+    </div>
+    <div style="overflow-x:auto;margin-top:14px;">
+    <table class="conj">
+      <tr><th>類型</th><th>辞書形</th><th>可能形</th><th>規則</th></tr>
+      <tr><td>五段</td><td>話す</td><td>話せる／話せます</td><td>う段→え段＋る</td></tr>
+      <tr><td>五段</td><td>飲む</td><td>飲める／飲めます</td><td>う段→え段＋る</td></tr>
+      <tr><td>五段</td><td>書く</td><td>書ける／書けます</td><td>う段→え段＋る</td></tr>
+      <tr><td>五段</td><td>買う</td><td>買える／買えます</td><td>う段→え段＋る</td></tr>
+      <tr><td>五段</td><td>泳ぐ</td><td>泳げる／泳げます</td><td>う段→え段＋る</td></tr>
+      <tr><td>一段</td><td>食べる</td><td>食べられる／食べられます</td><td>去る＋られる</td></tr>
+      <tr><td>一段</td><td>見る</td><td>見られる／見られます</td><td>去る＋られる</td></tr>
+      <tr><td>不規則</td><td>する</td><td>できる／できます</td><td>整組換成できる</td></tr>
+      <tr><td>不規則</td><td>来る</td><td>来られる／来られます</td><td>来（こ）られる</td></tr>
+    </table>
+    </div>
+  </div>
+
+  <div class="group">
+    <h2><span class="dot"></span>比較句</h2>
+    <p class="note">兩者比較、詢問偏好、群體中的最高級，三種常見句型</p>
+    <div class="item-list">
+      <div class="item"><div class="term">AはBより〜です</div><div class="desc">A比B更〜</div><div class="ex">日本語は英語より難しいです。（日文比英文難）</div></div>
+      <div class="item"><div class="term">AとBとどちらが〜ですか</div><div class="desc">A跟B哪個更〜（僅限兩者比較用どちら，三者以上才用どれ）</div><div class="ex">犬と猫とどちらが好きですか。（狗和貓比較喜歡哪個）</div></div>
+      <div class="item"><div class="term">〜の中で〜が一番〜です</div><div class="desc">在〜之中最〜</div><div class="ex">クラスの中で山田さんが一番背が高いです。（班上山田最高）</div></div>
+    </div>
+  </div>
+
+</main>
+</section>
+
+<section class="panel" id="panel-quiz">
+  <main style="padding:0;max-width:820px;margin:0 auto;">
+    <div class="quiz-top">
+      <span id="q-counter">第 1 / 15 題</span>
+      <span id="q-score">目前分數：0</span>
+    </div>
+    <div class="progress-bar"><div id="progress-fill" style="width:6.6%"></div></div>
+    <div class="quiz-card" id="quiz-card"></div>
+  </main>
+</section>
+
+<footer>阿凱日文教室・名詞句・可能形・比較句練習</footer>
+
+<script>
+const questionBank = [
+  {q:"わたしは　いしゃ＿＿＿。（我不是醫生）",opts:["です","でした","ではありません","ではありませんでした"],a:2,exp:"名詞句現在否定＝Nではありません。「医者ではありません」＝不是醫生。"},
+  {q:"きのうは　あめ＿＿＿。（昨天是雨天）",opts:["です","でした","じゃないです","ではありませんでした"],a:1,exp:"名詞句過去肯定＝Nでした。「雨でした」＝（昨天）是雨天。"},
+  {q:"あのひとは　むかし　がくせい＿＿＿。（他以前不是學生）",opts:["です","でした","ではありません","ではありませんでした"],a:3,exp:"名詞句過去否定＝Nではありませんでした。「学生ではありませんでした」＝以前不是學生。"},
+  {q:"わたしは　にほんごが　すこし　＿＿＿。（我會說一點日文）",opts:["はなす","はなします","はなせます","はなした"],a:2,exp:"可能形表示「會〜／能夠〜」，話す→話せます。「日本語が話せます」用「が」表示能力的對象，不是「を」。"},
+  {q:"すみません、ここで　しゃしんを　とる　＿＿＿が　できますか。（可以拍照嗎）",opts:["こと","もの","とき","ところ"],a:0,exp:"「動詞辞書形＋ことができます」是可能形的另一種句型，跟直接可能形變化意思相同，こと後面一定要接が才能連到できます。「撮ることができますか」＝可以拍照嗎？"},
+  {q:"わたしは　１００メートルを　＿＿＿。（我能游100公尺）",opts:["およぎます","およげます","およいだ","およがない"],a:1,exp:"泳ぐ的可能形是「泳げます」（五段動詞：う段→え段＋る）。"},
+  {q:"この　かんじは　むずかしくて　＿＿＿。（這個漢字太難，我看不懂）",opts:["よめません","よみません","よんでません","よまません"],a:0,exp:"読む的可能形是読めます，否定是読めません。「よみません」是「不讀」的意志否定，語意不同；「よまません」文法上不存在。"},
+  {q:"あなたは　すしが　＿＿＿か。（你會做壽司嗎）",opts:["つくります","つくれます","つくった","つくらない"],a:1,exp:"作る的可能形是「作れます」（五段：う→え＋る）。「すしが作れますか」＝你會做壽司嗎？"},
+  {q:"わたしは　じてんしゃに　＿＿＿。（我不會騎腳踏車）",opts:["のれません","のります","のった","のらない"],a:0,exp:"乗る的可能形是乗れます，否定是「乗れません」。「自転車に乗れません」＝不會騎腳踏車。"},
+  {q:"にほんごは　えいご　＿＿＿　むずかしいです。（日文比英文難）",opts:["より","ほど","ぐらい","だけ"],a:0,exp:"比較句＝AはBより〜です。「日本語は英語より難しいです」＝日文比英文難。"},
+  {q:"いぬ＿＿＿　ねこ＿＿＿　どちらが　すきですか。（狗和貓比較喜歡哪個）",opts:["と／と","に／に","の／の","を／を"],a:0,exp:"兩者比較句型＝AとBとどちらが〜ですか。「犬と猫とどちらが好きですか」＝狗和貓你比較喜歡哪個？"},
+  {q:"ふじさんは　にほんで　いちばん　＿＿＿　やまです。（富士山是日本最高的山）",opts:["たかい","たかいだ","たかさ","たかくて"],a:0,exp:"い形容詞直接修飾名詞時用辞書形（連體形＝辞書形不變）。「一番高い山」＝最高的山。"},
+  {q:"この　りんごは　あの　りんごより　＿＿＿。（這個蘋果比那個甜）",opts:["あまいです","あまかったです","あまさです","あまくてです"],a:0,exp:"い形容詞現在肯定直接＋です即可。「甘いです」＝甜。「あまさです」是把形容詞硬名詞化，「あまくてです」文法不通。"},
+  {q:"クラスの　なかで　だれが　いちばん　にほんごが　＿＿＿。（班上誰的日文最厲害）",opts:["じょうずです","じょうずでした","じょうずに","じょうずさ"],a:0,exp:"な形容詞現在肯定直接＋です即可。「上手です」＝厲害/擅長。「一番日本語が上手です」＝日文最好。"},
+  {q:"わたしは　えいごで　メールを　かく　＿＿＿が　できます。（我可以用英文寫信）",opts:["こと","もの","ところ","はず"],a:0,exp:"再次練習「動詞辞書形＋ことが＋できます」句型，前面接的動作是「書く」，こと後面別忘記が。「書くことができます」＝可以寫。"},
+];
+
+let order = [], current = 0, score = 0;
+function shuffle(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function startQuiz(){order=shuffle(questionBank.map((_,i)=>i));current=0;score=0;renderQuestion();}
+function renderQuestion(){
+  const card=document.getElementById("quiz-card");
+  if(current>=order.length){renderResult();return;}
+  const q=questionBank[order[current]];
+  document.getElementById("q-counter").textContent=`第 ${current+1} / ${order.length} 題`;
+  document.getElementById("q-score").textContent=`目前分數：${score}`;
+  document.getElementById("progress-fill").style.width=`${(current/order.length)*100}%`;
+  const optsHtml=q.opts.map((o,i)=>`<button class="opt" data-i="${i}">${o}</button>`).join("");
+  card.innerHTML=`<p class="q-text">${q.q}</p><div class="options">${optsHtml}</div><div class="explain" id="explain"></div><div class="quiz-actions"><button class="btn" id="next-btn" disabled>下一題</button></div>`;
+  card.querySelectorAll(".opt").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      const i=Number(btn.dataset.i);
+      card.querySelectorAll(".opt").forEach(b=>b.disabled=true);
+      if(i===q.a){btn.classList.add("correct");score++;}
+      else{btn.classList.add("wrong");card.querySelector(`.opt[data-i="${q.a}"]`).classList.add("correct");}
+      const exp=document.getElementById("explain");
+      exp.innerHTML=`<b>${i===q.a?"答對了！":"答錯囉，正解如上。"}</b><br>${q.exp}`;
+      exp.classList.add("show");
+      document.getElementById("q-score").textContent=`目前分數：${score}`;
+      document.getElementById("next-btn").disabled=false;
+    });
+  });
+  document.getElementById("next-btn").addEventListener("click",()=>{current++;renderQuestion();});
+}
+function renderResult(){
+  document.getElementById("progress-fill").style.width="100%";
+  document.getElementById("q-counter").textContent="測驗完成";
+  const pct=Math.round((score/order.length)*100);
+  let comment = pct>=85?"很穩，可能形跟比較句都抓到手感了。":pct>=60?"基礎不錯，錯的地方回去看解說再練一輪。":"沒關係，先把可能形變化規則再看一次，這是這頁最容易搞混的地方。";
+  document.getElementById("quiz-card").innerHTML=`<div class="result"><div class="score">${score} / ${order.length}</div><p>${comment}</p><button class="btn" id="retry-btn">再挑戰一次</button></div>`;
+  document.getElementById("retry-btn").addEventListener("click",startQuiz);
+}
+document.querySelectorAll("nav.tabs button").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    document.querySelectorAll("nav.tabs button").forEach(b=>b.classList.remove("active"));
+    document.querySelectorAll("section.panel").forEach(p=>p.classList.remove("active"));
+    btn.classList.add("active");
+    document.getElementById(`panel-${btn.dataset.panel}`).classList.add("active");
+  });
+});
+startQuiz();
+</script>
