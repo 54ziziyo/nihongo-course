@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>N5閱讀 第2篇｜週末の予定</title>
+<link rel="stylesheet" href="../../assets/site.css">
+<style>
+  .passage-card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:26px 24px;margin-bottom:30px;}
+  .sent-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;}
+  .sent-row .jp{font-size:17px;line-height:1.9;}
+  .sent-row .play-btn{flex-shrink:0;margin-top:2px;}
+
+  .quiz-card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:26px 24px;margin-bottom:20px;}
+  .q-text{font-size:16.5px;font-weight:700;margin:0 0 16px;}
+  .options{display:grid;gap:8px;}
+  .opt{text-align:left;font:inherit;font-size:15px;padding:11px 14px;border-radius:10px;border:2px solid var(--line);background:var(--paper);cursor:pointer;}
+  .opt:hover:not(:disabled){border-color:var(--indigo);}
+  .opt.correct{border-color:var(--matcha);background:var(--matcha-soft);font-weight:700;}
+  .opt.wrong{border-color:var(--wrong);background:var(--wrong-soft);}
+  .opt:disabled{cursor:default;}
+  .explain{margin-top:14px;padding:12px 16px;border-radius:10px;background:var(--indigo-soft);font-size:14px;display:none;}
+  .explain.show{display:block;}
+
+  .result-banner{text-align:center;padding:20px;background:var(--sakura-soft);border-radius:16px;margin-bottom:30px;display:none;}
+  .result-banner.show{display:block;}
+  .result-banner .score{font-size:32px;font-weight:800;color:var(--sakura);}
+
+  .grammar-note{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 18px;margin-bottom:10px;}
+  .grammar-note .term{font-weight:700;font-size:15px;margin-bottom:4px;color:var(--indigo);}
+  .grammar-note .desc{font-size:13.5px;color:var(--ink-soft);}
+
+  .kana-note{background:var(--matcha-soft);border-radius:14px;padding:14px 18px;font-size:13.5px;margin-bottom:20px;}
+
+  section.block{margin:36px 0;}
+  section.block h2{font-size:19px;display:flex;align-items:center;gap:8px;}
+  section.block h2 .dot{width:9px;height:9px;border-radius:50%;background:var(--sakura);display:inline-block;}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <a class="back" href="index.html">← 回閱讀文章列表</a>
+  <h1>第2篇｜<span class="accent">週末の予定</span></h1>
+  <p>N5程度短文，練習つもりです／ましょう／たいです這幾個計畫句型</p>
+</header>
+
+<main>
+
+  <section class="block">
+    <h2><span class="dot"></span>本文</h2>
+    <div class="passage-card" id="passage"></div>
+  </section>
+
+  <section class="block">
+    <h2><span class="dot"></span>理解問題</h2>
+    <div class="result-banner" id="result-banner"><span class="score" id="result-score"></span><div>分（滿分6分）</div></div>
+    <div id="quiz-area"></div>
+  </section>
+
+  <section class="block">
+    <h2><span class="dot"></span>文法解說</h2>
+    <div class="grammar-note"><div class="term">〜るつもりです</div><div class="desc">打算〜，表示自己的計畫，前面接動詞辞書形。</div></div>
+    <div class="grammar-note"><div class="term">〜ましょう</div><div class="desc">一起〜吧，邀約對方一起做某事。</div></div>
+    <div class="grammar-note"><div class="term">〜てから</div><div class="desc">做完〜之後，強調動作先後順序。</div></div>
+    <div class="grammar-note"><div class="term">〜たいです</div><div class="desc">想要〜，表達自己的意願。</div></div>
+    <div class="grammar-note"><div class="term">それから</div><div class="desc">然後、接下來，用來連接兩個句子，表示動作的先後。</div></div>
+  </section>
+
+  <section class="block">
+    <h2><span class="dot"></span>假名解說</h2>
+    <div class="kana-note">
+      這篇出現了「土曜日{どようび}」「日曜日{にちようび}」，「曜日」是「星期」的意思，前面接一到日對應的漢字（月火水木金土日）就是星期一到星期日。這篇沒有片假名外來語，因為場景是計畫行程，用詞比較生活化、以和語跟漢語詞彙為主。
+    </div>
+  </section>
+
+</main>
+
+<footer>阿凱日文教室・N5 閱讀練習</footer>
+
+<script src="../../assets/speak.js"></script>
+<script>
+const sentences = [
+  "今度{こんど}の週末{しゅうまつ}は友達{ともだち}と映画{えいが}を見{み}るつもりです。",
+  "土曜日{どようび}の朝{あさ}、駅{えき}で会{あ}いましょう。",
+  "映画{えいが}を見{み}てから、レストランで昼{ひる}ご飯{はん}を食{た}べたいです。",
+  "天気{てんき}がいいですから、公園{こうえん}も散歩{さんぽ}したいです。",
+  "日曜日{にちようび}は家{いえ}で宿題{しゅくだい}をします。",
+  "それから、少{すこ}し休{やす}みます。",
+];
+
+const passageEl = document.getElementById("passage");
+sentences.forEach(s => {
+  const row = document.createElement("div");
+  row.className = "sent-row";
+  row.innerHTML = `<button class="play-btn small">🔊</button><p class="jp">${renderFurigana(s)}</p>`;
+  row.querySelector("button").addEventListener("click", () => speakJa(stripFuriganaForSpeech(s)));
+  passageEl.appendChild(row);
+});
+
+const questionBank = [
+  {q:"週末、だれと映画を見ますか。",opts:["家族","先生","友達","一人で"],a:2,exp:"「友達と映画を見るつもりです」＝打算跟朋友看電影。"},
+  {q:"土曜日の朝、どこで会いますか。",opts:["学校","駅","公園","レストラン"],a:1,exp:"「駅で会いましょう」＝在車站見面吧。"},
+  {q:"映画を見てから、何をしますか。",opts:["家に帰ります","レストランで昼ご飯を食べます","宿題をします","寝ます"],a:1,exp:"「映画を見てから、レストランで昼ご飯を食べたいです」＝看完電影後想去餐廳吃午餐。"},
+  {q:"天気がいいから、何がしたいですか。",opts:["買い物","公園を散歩すること","映画を見ること","泳ぐこと"],a:1,exp:"「公園も散歩したいです」＝也想去公園散步。"},
+  {q:"日曜日は家で何をしますか。",opts:["料理","宿題","買い物","運動"],a:1,exp:"「日曜日は家で宿題をします」＝星期天在家做作業。"},
+  {q:"宿題をしたあと、何をしますか。",opts:["映画を見ます","友達に会います","少し休みます","学校へ行きます"],a:2,exp:"「それから、少し休みます」＝然後稍微休息一下。"},
+];
+
+let score = 0, answered = 0;
+const quizArea = document.getElementById("quiz-area");
+questionBank.forEach((q, qi) => {
+  const card = document.createElement("div");
+  card.className = "quiz-card";
+  const optsHtml = q.opts.map((o,i)=>`<button class="opt" data-i="${i}">${o}</button>`).join("");
+  card.innerHTML = `<p class="q-text">${qi+1}. ${q.q}</p><div class="options">${optsHtml}</div><div class="explain"></div>`;
+  card.querySelectorAll(".opt").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const i = Number(btn.dataset.i);
+      card.querySelectorAll(".opt").forEach(b=>b.disabled=true);
+      if(i===q.a){btn.classList.add("correct");score++;}
+      else{btn.classList.add("wrong");card.querySelector(`.opt[data-i="${q.a}"]`).classList.add("correct");}
+      const exp = card.querySelector(".explain");
+      exp.innerHTML = `<b>${i===q.a?"答對了！":"答錯囉，正解如上。"}</b><br>${q.exp}`;
+      exp.classList.add("show");
+      answered++;
+      if(answered === questionBank.length){
+        document.getElementById("result-score").textContent = score;
+        document.getElementById("result-banner").classList.add("show");
+      }
+    });
+  });
+  quizArea.appendChild(card);
+});
+</script>
+</body>
+</html>
